@@ -1,0 +1,2 @@
+Checkpoint01 created on Wed Jul 22 13:16:21 EDT 2026
+Snapshot of working state before annotation/cursor edits. Restore by copying these files back to the parent folder.

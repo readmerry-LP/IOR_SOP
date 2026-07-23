@@ -1,0 +1,2801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warehouse SOP — Logistics Plus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────
+   VARIABLES & RESET
+───────────────────────────────────────────────────────── */
+:root {
+  --bg-950:    #01080f;
+  --bg-900:    #020c1e;
+  --bg-800:    #030f28;
+  --bg-700:    #051233;
+  --bg-600:    #071a45;
+  --bg-500:    #0a2259;
+  --lp-navy:   #06236D;
+  --lp-blue:   #0565D7;
+  --lp-light:  #00AEEF;
+  --gold-600:  #9a7010;
+  --gold-500:  #C9A84C;
+  --gold-400:  #DFbf6A;
+  --gold-300:  #F0D590;
+  --white:     #FFFFFF;
+  --gray-600:  #555f7a;
+  --gray-500:  #787878;
+  --gray-400:  #8899BB;
+  --gray-300:  #AAB8D0;
+  --border:    #0c2755;
+  --border-2:  #173870;
+  --green:     #3ddc84;
+  --font-h:    'PT Sans Narrow', 'Arial Narrow', Arial, sans-serif;
+  --font-b:    'Inter', Arial, sans-serif;
+  --gold-grad: linear-gradient(135deg, #9a7010 0%, #e8c55a 45%, #b8921c 100%);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-900);
+  color: var(--white);
+  font-family: var(--font-b);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-b); }
+
+/* ─────────────────────────────────────────────────────────
+   HEADER
+───────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 56px;
+  background: rgba(2, 12, 30, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo-icon { width: 34px; height: 34px; flex-shrink: 0; }
+.logo-text { display: flex; flex-direction: column; gap: 2px; }
+.company-name {
+  font-family: var(--font-h);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--gold-500);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.product-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.2px;
+  line-height: 1;
+}
+.header-right { display: flex; align-items: center; gap: 16px; }
+.live-date {
+  font-size: 12px;
+  color: var(--gray-400);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--lp-blue);
+  border: 2px solid var(--lp-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   PAGE SYSTEM
+───────────────────────────────────────────────────────── */
+.page { display: none; flex: 1; flex-direction: column; }
+.page.active { display: flex; animation: pageFadeIn 0.28s ease; }
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────────────────────
+   HOME PAGE
+───────────────────────────────────────────────────────── */
+#page-home {
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px - 48px);
+  padding: 64px 24px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(5,101,215,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(6,35,109,0.15) 0%, transparent 70%);
+}
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  max-width: 860px;
+  width: 100%;
+  text-align: center;
+}
+.eyebrow {
+  font-family: var(--font-h);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold-500);
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px;
+  background: rgba(201,168,76,0.07);
+}
+.hero h1 {
+  font-family: var(--font-h);
+  font-size: clamp(38px, 5.5vw, 58px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+}
+.hero h1 .gold { color: var(--gold-400); }
+.hero .subtitle {
+  font-size: 15px;
+  color: var(--gray-400);
+  max-width: 500px;
+  line-height: 1.65;
+  font-weight: 400;
+}
+.cards-row {
+  display: flex;
+  align-items: stretch;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 1100px;
+}
+.sop-card {
+  flex: 1;
+  background: var(--bg-700);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  text-align: left;
+}
+.sop-card:hover {
+  background: var(--bg-600);
+  border-color: var(--border-2);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+}
+.card-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sop-card h3 {
+  font-family: var(--font-h);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--white);
+}
+.sop-card p {
+  font-size: 13px;
+  color: var(--gray-400);
+  line-height: 1.62;
+  flex: 1;
+}
+.gold-btn {
+  background: var(--gold-grad);
+  color: #0a1530;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.2s;
+  box-shadow: 0 3px 14px rgba(201,168,76,0.22);
+  width: 100%;
+}
+.gold-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201,168,76,0.38);
+  filter: brightness(1.1);
+}
+.or-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.or-line { width: 1px; flex: 1; background: var(--border-2); min-height: 40px; }
+.or-divider span {
+  font-size: 11px;
+  color: var(--gray-500);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────────────
+   INNER HEADER BAR
+───────────────────────────────────────────────────────── */
+.inner-header {
+  height: 50px;
+  background: var(--bg-800);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.back-btn {
+  background: none;
+  border: 1px solid var(--border-2);
+  color: var(--gray-300);
+  padding: 5px 13px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.back-btn:hover { background: var(--bg-600); color: var(--white); border-color: var(--gray-400); }
+.inner-page-title {
+  font-family: var(--font-h);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.2px;
+}
+.badge {
+  margin-left: auto;
+  padding: 4px 13px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.badge.inbound  { background: rgba(0,174,239,0.12); color: var(--lp-light); border: 1px solid rgba(0,174,239,0.25); }
+.badge.outbound { background: rgba(201,168,76,0.12); color: var(--gold-400); border: 1px solid rgba(201,168,76,0.25); }
+.badge.milestone { background: rgba(61,220,132,0.12); color: var(--green); border: 1px solid rgba(61,220,132,0.25); }
+
+/* ─────────────────────────────────────────────────────────
+   INNER LAYOUT
+───────────────────────────────────────────────────────── */
+.inner-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STEP SIDEBAR
+───────────────────────────────────────────────────────── */
+.step-sidebar {
+  width: 215px;
+  min-width: 215px;
+  background: var(--bg-800);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 18px 0 24px;
+  flex-shrink: 0;
+}
+.sidebar-step {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 0 0 16px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sidebar-step:hover:not(.locked) { background: rgba(255,255,255,0.025); }
+.sidebar-step.active {
+  background: rgba(201,168,76,0.055);
+  border-right: 3px solid var(--gold-500);
+}
+.sidebar-step.locked { opacity: 0.4; cursor: not-allowed; }
+.step-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 11px;
+  flex-shrink: 0;
+  width: 28px;
+}
+.step-line { width: 2px; background: var(--border-2); flex: 1; }
+.step-line.top  { min-height: 12px; }
+.step-line.bot  { min-height: 12px; }
+.sidebar-step:first-child .step-line.top  { visibility: hidden; }
+.sidebar-step:last-child  .step-line.bot  { visibility: hidden; }
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-600);
+  border: 2px solid var(--border-2);
+  color: var(--gray-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-h);
+  flex-shrink: 0;
+  transition: all 0.2s;
+  z-index: 1;
+}
+.sidebar-step.active .step-dot { background: var(--gold-500); border-color: var(--gold-400); color: #0a1530; }
+.step-meta { display: flex; flex-direction: column; gap: 5px; padding: 9px 12px 9px 0; }
+.step-label { font-size: 12px; font-weight: 600; color: var(--gray-300); line-height: 1.3; }
+.sidebar-step.active .step-label { color: var(--white); }
+.step-status {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 10px;
+  width: fit-content;
+}
+.status-progress { background: rgba(61,220,132,0.14); color: var(--green); border: 1px solid rgba(61,220,132,0.25); }
+.status-next     { background: rgba(0,174,239,0.12);   color: var(--lp-light); border: 1px solid rgba(0,174,239,0.2); }
+.status-coming   { background: rgba(120,120,120,0.14); color: var(--gray-500); border: 1px solid rgba(120,120,120,0.2); }
+.status-done     { background: rgba(61,220,132,0.16); color: var(--green); border: 1px solid rgba(61,220,132,0.35); }
+.next-step-btn   { display:inline-flex; align-items:center; font-family:inherit; font-size:11px; font-weight:700; letter-spacing:.5px; padding:4px 14px; background:var(--lp-blue); color:#fff; border:none; border-radius:20px; cursor:pointer; transition:background 0.18s; margin-left:12px; vertical-align:middle; }
+.next-step-btn:hover { background:var(--accent); color:var(--navy); }
+
+/* ─────────────────────────────────────────────────────────
+   STEP CONTENT AREA
+───────────────────────────────────────────────────────── */
+.step-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 32px 36px 48px;
+  background: var(--bg-900);
+}
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: pageFadeIn 0.25s ease; }
+.step-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 13px;
+  border-radius: 20px;
+  background: rgba(201,168,76,0.09);
+  color: var(--gold-500);
+  border: 1px solid rgba(201,168,76,0.24);
+  margin-bottom: 14px;
+}
+.step-content h2 {
+  font-family: var(--font-h);
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+.step-description {
+  font-size: 14px;
+  color: var(--gray-400);
+  line-height: 1.68;
+  margin-bottom: 28px;
+  max-width: 600px;
+}
+.step-description strong { color: var(--gray-300); font-weight: 600; }
+
+/* ─────────────────────────────────────────────────────────
+   BROWSER MOCKUP FRAME
+───────────────────────────────────────────────────────── */
+.browser-mockup {
+  width: 67%;
+  max-width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 22px 64px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05);
+  margin-bottom: 22px;
+  background: #14192e;
+}
+.browser-chrome {
+  height: 36px;
+  background: #1c2138;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 12px;
+}
+.traffic-lights { display: flex; gap: 6px; }
+.tl { width: 11px; height: 11px; border-radius: 50%; }
+.tl.r { background: #ff5f57; }
+.tl.y { background: #febc2e; }
+.tl.g { background: #28c840; }
+.address-bar {
+  flex: 1;
+  height: 22px;
+  background: rgba(255,255,255,0.065);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--gray-400);
+  font-family: monospace;
+  gap: 6px;
+}
+.lock-icon { opacity: 0.6; }
+
+/* ── SCREENSHOT VIEWPORTS ── */
+/* Receipt Step 1: zoomed-in screenshot */
+.browser-viewport-s1 {
+  width: 100%;
+  aspect-ratio: 1382 / 769;
+  overflow: hidden;
+  position: relative;
+  background: #1d2a55;
+}
+.cw-screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  transform: scale(1.6) translate(22.9%, 19.6%);
+  transform-origin: center center;
+  display: block;
+}
+/* Order Steps 1–3: full screenshots at natural scale */
+.browser-viewport-o {
+  width: 100%;
+  aspect-ratio: 1382 / 769;
+  overflow: hidden;
+  position: relative;
+  background: #1d2a55;
+}
+.cw-screenshot-full {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  display: block;
+}
+/* Receipt Step 2: CW HTML recreation */
+.browser-viewport-s2 {
+  width: 100%;
+  height: 390px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--gray-400);
+  font-size: 13px;
+  text-align: center;
+  background: #1d2a55;
+  padding: 24px;
+}
+.img-fallback .fallback-icon {
+  width: 60px; height: 60px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.img-fallback p { line-height: 1.7; }
+.img-fallback strong { color: var(--gold-400); font-family: monospace; }
+
+/* ─────────────────────────────────────────────────────────
+   SCREENSHOT PLACEHOLDER (pending capture)
+───────────────────────────────────────────────────────── */
+.shot-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  text-align: center;
+  padding: 26px 44px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 14px, transparent 14px 28px),
+    #0a1836;
+  border: 2px dashed rgba(201,168,76,0.4);
+}
+.ph-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--gold-500);
+}
+.ph-file {
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--gold-300);
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 4px 14px;
+  border-radius: 6px;
+}
+.ph-desc {
+  font-size: 12.5px;
+  color: var(--gray-300);
+  line-height: 1.75;
+  max-width: 560px;
+}
+.ph-desc strong { color: var(--white); }
+.shot-label {
+  font-family: var(--font-h);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin: 26px 0 10px;
+}
+.shot-label:first-of-type { margin-top: 0; }
+.doc-codes {
+  border-collapse: collapse;
+  margin: 6px 0 22px;
+  font-size: 13px;
+}
+.doc-codes td {
+  border: 1px solid var(--border-2);
+  padding: 7px 16px;
+  color: var(--gray-300);
+}
+.doc-codes td:first-child { font-family: monospace; font-weight: 700; color: var(--gold-400); }
+.qc-list {
+  margin: 0 0 24px 18px;
+  font-size: 13.5px;
+  color: var(--gray-300);
+  line-height: 1.9;
+  max-width: 600px;
+}
+.qc-list strong { color: var(--white); }
+
+/* ─────────────────────────────────────────────────────────
+   CURSOR LAYER
+───────────────────────────────────────────────────────── */
+.cursor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 20;
+}
+.cursor-svg {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+  z-index: 22;
+  width: 22px;
+  height: 26px;
+}
+.hover-ring {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2.5px solid var(--gold-500);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 21;
+  box-shadow: 0 0 8px rgba(201,168,76,0.4);
+}
+.ripple-ring {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-400);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 21;
+}
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1);    opacity: 0.9; }
+  50%       { transform: scale(1.24); opacity: 0.4; }
+}
+@keyframes rippleExpand {
+  0%   { transform: scale(0.2); opacity: 1; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   CARGOWISE SCREEN RECREATION (RECEIPT STEP 2)
+───────────────────────────────────────────────────────── */
+.cw-screen {
+  width: 100%; height: 100%;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 11px; color: #2a2a3a; background: #f0f0f0;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.cw-title {
+  height: 25px;
+  background: linear-gradient(to bottom, #1e3f7a, #163060);
+  color: rgba(255,255,255,0.92);
+  display: flex; align-items: center; padding: 0 8px;
+  font-size: 10.5px; font-weight: 500; white-space: nowrap; overflow: hidden; flex-shrink: 0;
+}
+.cw-nav {
+  height: 33px;
+  background: linear-gradient(to bottom, #2e65b8, #2050a0);
+  display: flex; align-items: center; padding: 0 2px;
+  border-bottom: 1px solid #1a4080; flex-shrink: 0;
+}
+.cw-tab {
+  height: 27px; padding: 0 13px;
+  color: rgba(255,255,255,0.88); font-size: 11px; font-weight: 500;
+  display: flex; align-items: center; border-radius: 3px 3px 0 0; cursor: default; user-select: none;
+}
+.cw-tab:hover { background: rgba(255,255,255,0.12); }
+.cw-nav-search {
+  margin-left: auto; height: 22px;
+  background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 3px; display: flex; align-items: center; padding: 0 8px;
+  color: rgba(255,255,255,0.65); font-size: 10.5px; margin-right: 6px; gap: 5px; min-width: 130px;
+}
+.cw-filters {
+  background: #e4e8f0; border-bottom: 1px solid #c4c8d8; padding: 4px 8px 3px; flex-shrink: 0;
+}
+.cw-filter-row { display: flex; align-items: center; gap: 6px; height: 22px; margin-bottom: 2px; }
+.cw-filter-row:last-child { margin-bottom: 0; }
+.cw-flabel { min-width: 70px; font-size: 10.5px; color: #555; font-weight: 500; text-align: right; }
+.cw-finput { height: 18px; border: 1px solid #a8b0c0; background: white; border-radius: 2px; padding: 0 5px; font-size: 10.5px; color: #333; min-width: 90px; outline: none; }
+.cw-fselect { height: 18px; border: 1px solid #a8b0c0; background: white; border-radius: 2px; padding: 0 3px; font-size: 10px; color: #333; outline: none; }
+.cw-toolbar {
+  height: 32px; background: linear-gradient(to bottom, #ececec, #dcdcdc);
+  border-bottom: 1px solid #c0c0c0; display: flex; align-items: center; padding: 0 4px; gap: 1px; flex-shrink: 0;
+}
+.cw-btn {
+  height: 24px; padding: 0 9px;
+  border: 1px solid #b8b8b8; background: linear-gradient(to bottom, #f6f6f6, #e2e2e2);
+  color: #2a2a2a; font-size: 11px; border-radius: 2px; cursor: default;
+  display: flex; align-items: center; gap: 3px; white-space: nowrap; user-select: none;
+  font-family: 'Segoe UI', Arial, sans-serif; transition: background 0.15s, border-color 0.15s;
+}
+.cw-btn.gold-highlight {
+  background: linear-gradient(to bottom, #ffe490, #e8b830);
+  border-color: #c89020; color: #5a3500;
+  box-shadow: 0 0 6px rgba(232,184,48,0.5);
+}
+.cw-spacer { flex: 1; }
+.cw-btn-sep { width: 1px; height: 18px; background: #bbb; margin: 0 3px; }
+.cw-actions {
+  height: 28px; background: #d8dce8; border-bottom: 1px solid #b8bcd0;
+  display: flex; align-items: center; padding: 0 5px; gap: 2px; flex-shrink: 0;
+}
+.cw-act-btn {
+  height: 22px; padding: 0 8px; background: none; border: none; color: #1a4090;
+  font-size: 10.5px; cursor: default; display: flex; align-items: center; gap: 2px;
+  border-radius: 2px; font-weight: 500; font-family: 'Segoe UI', Arial, sans-serif; user-select: none;
+}
+.cw-act-btn:hover { background: rgba(26,64,144,0.1); }
+.cw-act-sep { width: 1px; height: 14px; background: #b0b8c8; margin: 0 2px; }
+.cw-find-input { height: 18px; border: 1px solid #a8b0c0; background: white; border-radius: 2px; padding: 0 5px; font-size: 10.5px; color: #1a4090; width: 80px; outline: none; }
+.cw-grid-area { display: flex; flex: 1; overflow: hidden; }
+.cw-grid-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.cw-grid-header {
+  height: 26px; background: linear-gradient(to bottom, #d4d8e4, #c8ccd8);
+  border-bottom: 1px solid #b4b8cc; display: flex; align-items: center; flex-shrink: 0;
+}
+.cw-gcell {
+  padding: 0 8px; font-size: 10.5px; font-weight: 600; color: #3a3a50;
+  border-right: 1px solid #b8bcd0; height: 100%; display: flex; align-items: center; flex-shrink: 0; user-select: none;
+}
+.cw-grid-body {
+  flex: 1; background: white; display: flex; align-items: center; justify-content: center;
+  color: #aaa; font-size: 11px; font-style: italic;
+}
+.cw-recent {
+  width: 158px; background: #eaecf4; border-left: 1px solid #c0c8d8; flex-shrink: 0;
+  display: flex; flex-direction: column;
+}
+.cw-recent-hdr {
+  height: 26px; background: linear-gradient(to bottom, #d4d8e4, #c8ccd8);
+  border-bottom: 1px solid #b4b8cc; display: flex; align-items: center; padding: 0 8px;
+  font-size: 10.5px; font-weight: 700; color: #3a3a50; flex-shrink: 0;
+}
+.cw-recent-item { padding: 5px 8px; font-size: 10.5px; color: #1a4090; border-bottom: 1px solid #d4d8e8; cursor: default; user-select: none; }
+.cw-recent-item:hover { background: #d8ddf0; }
+
+/* ─────────────────────────────────────────────────────────
+   STEP CHECKBOXES
+───────────────────────────────────────────────────────── */
+.step-checks {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.check-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--gray-400);
+  cursor: default; user-select: none; transition: color 0.25s;
+}
+.check-item.checked { color: var(--green); }
+.check-item input[type="checkbox"] {
+  width: 16px; height: 16px; accent-color: var(--green);
+  cursor: default; pointer-events: none; flex-shrink: 0;
+}
+.replay-btn {
+  margin-left: auto;
+  background: none; border: 1px solid var(--border-2); color: var(--gray-300);
+  padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+}
+.replay-btn:hover { background: var(--bg-600); color: var(--white); border-color: var(--gray-400); }
+
+/* ─────────────────────────────────────────────────────────
+   LOCKED / COMING SOON
+───────────────────────────────────────────────────────── */
+.locked-panel {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 340px; gap: 16px; text-align: center;
+}
+.locked-icon {
+  width: 58px; height: 58px; background: var(--bg-700); border: 1px solid var(--border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.locked-panel h3 { font-family: var(--font-h); font-size: 22px; font-weight: 700; color: var(--gray-300); }
+.locked-panel p { font-size: 13px; color: var(--gray-500); max-width: 300px; line-height: 1.6; }
+.cs-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px;
+  background: rgba(120,120,120,0.12); color: var(--gray-500); border: 1px solid rgba(120,120,120,0.2);
+}
+
+/* ─────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────── */
+.site-footer {
+  height: 48px; background: var(--bg-800); border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 24px; flex-shrink: 0;
+}
+.site-footer span { font-size: 11px; color: var(--gray-600); }
+
+/* ─────────────────────────────────────────────────────────
+   ANNOTATED SCREENSHOT VIEWPORT (natural aspect, no crop)
+───────────────────────────────────────────────────────── */
+.vp-annot {
+  width: 100%;
+  position: relative;
+  background: #1d2a55;
+  overflow: hidden;
+  line-height: 0;
+}
+.vp-annot .cw-shot {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* Portrait / square document shots: constrain width so the whole page shows without being huge, left-aligned */
+.browser-mockup.doc {
+  width: 470px;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+}
+/* Frozen step navigation in the (sticky) inner header */
+.header-nav { display: flex; align-items: center; gap: 8px; margin-left: 18px; }
+.hnav-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.4px;
+  padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.18s;
+  border: 1px solid var(--border-2); background: var(--bg-700); color: var(--gray-300); white-space: nowrap;
+}
+.hnav-btn:hover:not(:disabled) { background: var(--bg-600); color: #fff; border-color: var(--gray-400); }
+.hnav-btn.primary { background: var(--lp-blue); border-color: var(--lp-blue); color: #fff; }
+.hnav-btn.primary:hover:not(:disabled) { filter: brightness(1.12); }
+.hnav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.hnav-count { font-size: 11px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.3px; margin: 0 2px; min-width: 74px; text-align: center; }
+/* The old in-panel Next Step buttons are replaced by the frozen header nav */
+.next-step-btn { display: none; }
+.anno-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  line-height: normal;
+}
+.anno-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 16;
+}
+/* Callout note — matches the site's gold/navy theme */
+.anno {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #06236D 0%, #0a3a9e 100%);
+  color: var(--white);
+  border: 1.5px solid var(--gold-500);
+  border-radius: 9px;
+  padding: 8px 12px;
+  font-family: var(--font-b);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.1px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.25);
+  max-width: 240px;
+  z-index: 18;
+  text-align: left;
+}
+.anno.gold {
+  background: var(--gold-grad);
+  color: #0a1530;
+  border-color: #7a5a0e;
+}
+.anno .anno-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  color: #0a1530;
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 12px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.anno.step { display: flex; align-items: flex-start; }
+.anno.step span.txt { display: inline-block; }
+/* Highlight ring/box over a UI element */
+.anno-box {
+  position: absolute;
+  border: 2.5px solid var(--gold-400);
+  border-radius: 5px;
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.22), 0 0 14px rgba(201,168,76,0.55);
+  z-index: 17;
+}
+@keyframes annoPulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(201,168,76,0.22), 0 0 14px rgba(201,168,76,0.5); }
+  50%     { box-shadow: 0 0 0 5px rgba(201,168,76,0.34), 0 0 20px rgba(201,168,76,0.8); }
+}
+.anno-box.pulse { animation: annoPulse 1.8s ease-in-out infinite; }
+
+/* ─────────────────────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-800); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-600); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-left">
+    <div class="logo-icon">
+      <img src="data:image/png;base64,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" alt="Logistics Plus" width="34" height="34" style="border-radius:50%;display:block;"/>
+    </div>
+    <div class="logo-text">
+      <span class="company-name">Logistics Plus</span>
+      <span class="product-name">Warehouse SOP</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="live-date" id="live-date"></span>
+    <div class="avatar-badge">RM</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════════════════ -->
+<section id="page-home" class="page active">
+  <div class="hero">
+    <span class="eyebrow">Standard Operating Procedures</span>
+    <h1>Warehouse Operations<br><span class="gold">Command Center</span></h1>
+    <p class="subtitle">Your step-by-step guide to CargoWise warehouse operations at Logistics Plus. Select a workflow below to begin.</p>
+    <div class="cards-row">
+
+      <div class="sop-card" id="card-receipt" onclick="navigate('receipt')">
+        <div class="card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <h3>Create a Receipt</h3>
+        <p>Log inbound shipments and create Advanced Shipment Notices (ASNs) in CargoWise to track arriving warehouse inventory from suppliers and freight partners.</p>
+        <button class="gold-btn" onclick="event.stopPropagation(); navigate('receipt')">Start Receipt →</button>
+      </div>
+
+      <div class="or-divider">
+        <div class="or-line"></div><span>or</span><div class="or-line"></div>
+      </div>
+
+      <div class="sop-card" id="card-order" onclick="navigate('order')">
+        <div class="card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+        </div>
+        <h3>Create an Order</h3>
+        <p>Process outbound orders and generate pick lists for warehouse fulfillment. Manage dispatch and confirm shipment details for customer deliveries.</p>
+        <button class="gold-btn" onclick="event.stopPropagation(); navigate('order')">Start Order →</button>
+      </div>
+
+      <div class="or-divider">
+        <div class="or-line"></div><span>or</span><div class="or-line"></div>
+      </div>
+
+      <div class="sop-card" id="card-milestones" onclick="navigate('milestones')">
+        <div class="card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3>Milestone Management</h3>
+        <p>Capture ETA and Actual Delivery Date milestones on warehouse orders so tracking and customer visibility stay accurate through delivery.</p>
+        <button class="gold-btn" onclick="event.stopPropagation(); navigate('milestones')">Start Milestones →</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: RECEIPT
+══════════════════════════════════════════════════════ -->
+<section id="page-receipt" class="page">
+  <div class="inner-header">
+    <button class="back-btn" onclick="navigate('home')">← Back</button>
+    <span class="inner-page-title">Create a Receipt</span>
+    <div class="header-nav">
+      <button class="hnav-btn" id="prev-receipt" onclick="stepDelta('page-receipt',-1)">‹ Prev</button>
+      <span class="hnav-count" id="count-receipt">Step 1 of 8</span>
+      <button class="hnav-btn primary" id="next-receipt" onclick="stepDelta('page-receipt',1)">Next Step ›</button>
+    </div>
+    <span class="badge inbound">INBOUND</span>
+  </div>
+  <div class="inner-layout">
+    <aside class="step-sidebar">
+
+      <div class="sidebar-step active" data-step="0" onclick="setReceiptStep(0)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">1</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Navigate to Receive</span><span class="step-status status-progress">In Progress</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="1" onclick="setReceiptStep(1)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">2</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Create New Receipt</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="2" onclick="setReceiptStep(2)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">3</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">New Receipt Form</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="3" onclick="setReceiptStep(3)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">4</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Add Line Items</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="4" onclick="setReceiptStep(4)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">5</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Save &amp; Close</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="5" onclick="setReceiptStep(5)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">6</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Create a Split</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="6" onclick="setReceiptStep(6)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">7</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Import Serials</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="7" onclick="setReceiptStep(7)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">8</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Finalize the ASN</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+    </aside>
+
+    <main class="step-content">
+
+      <!-- Receipt Step 1: Navigate to Receive -->
+      <div class="step-panel active" data-panel="0">
+        <span class="step-pill">Step 1 of 8</span><button class="next-step-btn" onclick="setReceiptStep(1)">Next Step ›</button>
+        <h2>Navigate to the Receive Screen</h2>
+        <p class="step-description">Click <strong>Operate</strong> in the top menu, then click <strong>Warehouse</strong> in the left panel, then select <strong>Receive</strong> under Product Warehouse.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-r1">
+            <img src="CW_RECEIVES_1.png" alt="CargoWise Navigation" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-r1').style.display='flex';"/>
+            <div id="fallback-r1" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_RECEIVES_1.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-r1">
+              <div class="hover-ring" id="hr-r1"></div>
+              <div class="ripple-ring" id="rr-r1"></div>
+              <svg class="cursor-svg" id="cur-r1" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-r1-op"><input type="checkbox" id="chk-r1-op" onclick="return false;"><span>Click Operate</span></label>
+          <label class="check-item" id="ci-r1-wh"><input type="checkbox" id="chk-r1-wh" onclick="return false;"><span>Click Warehouse</span></label>
+          <label class="check-item" id="ci-r1-rv"><input type="checkbox" id="chk-r1-rv" onclick="return false;"><span>Select Receive</span></label>
+          <button class="replay-btn" onclick="replayR1()">&#8635; Replay</button>
+        </div>
+      </div>
+
+      <!-- Receipt Step 2: Create New Receipt -->
+      <div class="step-panel" data-panel="1">
+        <span class="step-pill">Step 2 of 8</span><button class="next-step-btn" onclick="setReceiptStep(2)">Next Step ›</button>
+        <h2>Create a New Receipt</h2>
+        <p class="step-description">Click the <strong>New</strong> button in the top toolbar to open a blank receipt entry form.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / Receive
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-r2">
+            <img src="CW_RECEIVES_2.png" alt="CargoWise Receive List" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-r2').style.display='flex';"/>
+            <div id="fallback-r2" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_RECEIVES_2.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-r2">
+              <div class="hover-ring" id="hr-r2"></div>
+              <div class="ripple-ring" id="rr-r2"></div>
+              <svg class="cursor-svg" id="cur-r2" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-r2-new"><input type="checkbox" id="chk-r2-new" onclick="return false;"><span>Click New</span></label>
+          <button class="replay-btn" onclick="replayR2()">&#8635; Replay</button>
+        </div>
+      </div>
+
+      <!-- Receipt Step 3: New Receipt Form -->
+      <div class="step-panel" data-panel="2">
+        <span class="step-pill">Step 3 of 8</span><button class="next-step-btn" onclick="setReceiptStep(3)">Next Step ›</button>
+        <h2>Fill in the New Receipt Form</h2>
+        <p class="step-description">Enter the mandatory fields: <strong>Client</strong> (owner of the goods), <strong>Whs.</strong> (the warehouse location), <strong>Transport</strong> and <strong>Supplier</strong> organizations, <strong>Transport Ref.</strong>, and the <strong>ETA</strong>. Status will show <em>NEW ENTRY (UNSAVED)</em> until saved.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / New Receipt
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-r3">
+            <img src="CW_RECEIVES_3.png" alt="New Receipt Form" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-r3').style.display='flex';"/>
+            <div id="fallback-r3" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_RECEIVES_3.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-r3">
+              <div class="hover-ring" id="hr-r3"></div>
+              <div class="ripple-ring" id="rr-r3"></div>
+              <svg class="cursor-svg" id="cur-r3" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-r3-cl"><input type="checkbox" id="chk-r3-cl" onclick="return false;"><span>Enter Client</span></label>
+          <label class="check-item" id="ci-r3-wh"><input type="checkbox" id="chk-r3-wh" onclick="return false;"><span>Enter Whs.</span></label>
+          <button class="replay-btn" onclick="replayR3()">&#8635; Replay</button>
+        </div>
+      </div>
+
+      <!-- Receipt Step 4: Add Line Items -->
+      <div class="step-panel" data-panel="3">
+        <span class="step-pill">Step 4 of 8</span><button class="next-step-btn" onclick="setReceiptStep(4)">Next Step ›</button>
+        <h2>Add Line Items</h2>
+        <p class="step-description">Click the <strong>Lines</strong> tab, then click the first row in the grid to enter at least one product and its quantity (packs).</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / New Receipt
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-r4">
+            <img src="CW_RECEIVES_5.png" alt="Receipt Lines Tab" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-r4').style.display='flex';"/>
+            <div id="fallback-r4" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_RECEIVES_5.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-r4">
+              <div class="hover-ring" id="hr-r4"></div>
+              <div class="ripple-ring" id="rr-r4"></div>
+              <svg class="cursor-svg" id="cur-r4" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-r4-lt"><input type="checkbox" id="chk-r4-lt" onclick="return false;"><span>Click Lines tab</span></label>
+          <label class="check-item" id="ci-r4-rw"><input type="checkbox" id="chk-r4-rw" onclick="return false;"><span>Click first row</span></label>
+          <label class="check-item" id="ci-r4-pk"><input type="checkbox" id="chk-r4-pk" onclick="return false;"><span>Click Packs field</span></label>
+          <button class="replay-btn" onclick="replayR4()">&#8635; Replay</button>
+        </div>
+      </div>
+
+      <!-- Receipt Step 5: Save & Close -->
+      <div class="step-panel" data-panel="4">
+        <span class="step-pill">Step 5 of 8</span><button class="next-step-btn" onclick="setReceiptStep(5)">Next Step ›</button>
+        <h2>Save &amp; Close</h2>
+        <p class="step-description">Click <strong>Save &amp; Close</strong>. The status changes from <em>NEW ENTRY (UNSAVED)</em> to <em>ENTERED (SAVED)</em>, the <strong>Receive Ref</strong> auto-populates with a system-generated warehouse docket ID, and the booking date is recorded.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / New Receipt
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-r5">
+            <img src="CW_RECEIVES_6.png" alt="Save and Close Receipt" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-r5').style.display='flex';"/>
+            <div id="fallback-r5" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_RECEIVES_6.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-r5">
+              <div class="hover-ring" id="hr-r5"></div>
+              <div class="ripple-ring" id="rr-r5"></div>
+              <svg class="cursor-svg" id="cur-r5" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-r5-sv"><input type="checkbox" id="chk-r5-sv" onclick="return false;"><span>Click Save &amp; Close</span></label>
+          <button class="replay-btn" onclick="replayR5()">&#8635; Replay</button>
+        </div>
+      </div>
+
+      <!-- Receipt Step 6: Create a Split -->
+      <div class="step-panel" data-panel="5">
+        <span class="step-pill">Step 6 of 8</span><button class="next-step-btn" onclick="setReceiptStep(6)">Next Step ›</button>
+        <h2>Create a Split (Partial Receipt)</h2>
+        <p class="step-description">If only part of the expected quantity arrives, split the receipt. Open the receipt and go to <strong>Actions → Split Receipt by Quantity</strong>. Enter the quantity actually received in the <strong>Split Quantity</strong> column on each line, then click <strong>Save</strong>. To open the split afterwards, go to the <strong>Related Splits</strong> tab and click the split row.</p>
+
+        <h4 class="shot-label">Screenshot 1 — Split by quantity</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Receipt</div>
+          </div>
+          <div class="vp-annot" id="viewport-rsp">
+            <img src="CW_RECEIVES_SPLIT_1.png" alt="Split Receipt by Quantity" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1515/896;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_RECEIVES_SPLIT_1.png</span>
+              <p class="ph-desc">In CW, open a saved receipt with lines. Open the <strong>Actions menu</strong> so "<strong>Split Receipt by Quantity</strong>" is visible (highlight it). The line grid should show a quantity typed in the <strong>Split Quantity</strong> column, and include the <strong>Save</strong> button at the bottom-right.</p>
+            </div>
+            <div class="cursor-layer" id="cl-rsp">
+              <div class="hover-ring" id="hr-rsp"></div>
+              <div class="ripple-ring" id="rr-rsp"></div>
+              <svg class="cursor-svg" id="cur-rsp" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-rsp-ac"><input type="checkbox" id="chk-rsp-ac" onclick="return false;"><span>Actions ▸ Split Receipt by Quantity</span></label>
+          <label class="check-item" id="ci-rsp-qt"><input type="checkbox" id="chk-rsp-qt" onclick="return false;"><span>Enter Split Quantity</span></label>
+          <label class="check-item" id="ci-rsp-sv"><input type="checkbox" id="chk-rsp-sv" onclick="return false;"><span>Save</span></label>
+          <button class="replay-btn" onclick="replayRSP()">↺ Replay</button>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Related Splits tab</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Receipt / Related Splits</div>
+          </div>
+          <div class="vp-annot" id="viewport-rsp2">
+            <img src="CW_RECEIVES_SPLIT_2.png" alt="Related Splits tab" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:831/317;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_RECEIVES_SPLIT_2.png</span>
+              <p class="ph-desc">On a split receipt, click the <strong>Related Splits</strong> sub-tab (highlight the tab). Capture the grid showing the <strong>PARENT</strong> row with its Receive Reference — this is the row you click to jump to the split.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno-box pulse" style="left:31.5%; top:23.5%; width:9.5%; height:7%;"></div>
+              <svg class="anno-svg" viewBox="0 0 831 317" preserveAspectRatio="none">
+                <defs><marker id="ah-rsp2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="470" y1="150" x2="322" y2="136" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-rsp2)"/>
+              </svg>
+              <div class="anno gold" style="left:63%; top:48%;">Click the split row here to jump to the split</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receipt Step 7: Import Serials -->
+      <div class="step-panel" data-panel="6">
+        <span class="step-pill">Step 7 of 8</span><button class="next-step-btn" onclick="setReceiptStep(7)">Next Step ›</button>
+        <h2>Import Serials</h2>
+        <p class="step-description">Load the serial numbers into the receipt lines:</p>
+        <ol class="qc-list">
+          <li>Save the serial-number Excel file as a <strong>CSV</strong>.</li>
+          <li>Right-click the receipt lines grid and choose <strong>Import Data…</strong></li>
+          <li>In the Data Import Wizard's <strong>Mapping</strong> tab, drag each CSV column onto its corresponding CargoWise field.</li>
+        </ol>
+
+        <h4 class="shot-label">Screenshot 1 — Import Data menu</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / New Receipt</div>
+          </div>
+          <div class="vp-annot" id="viewport-rse1">
+            <img src="CW_RECEIVES_SERIALS_1.png" alt="Import Data context menu" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1520/897;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_RECEIVES_SERIALS_1.png</span>
+              <p class="ph-desc">On a receipt, <strong>right-click the lines grid</strong> so the context menu is open, and highlight <strong>Import Data…</strong> (the menu also shows Export All Columns, Mass Update Data, etc.).</p>
+            </div>
+            <div class="anno-layer">
+              <svg class="anno-svg" viewBox="0 0 1520 897" preserveAspectRatio="none">
+                <defs><marker id="ah-rse1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="330" y1="475" x2="200" y2="425" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-rse1)"/>
+              </svg>
+              <div class="anno step" style="left:56%; top:19%;"><span class="anno-num">1</span><span class="txt">Save the serials Excel file as a <strong>CSV</strong></span></div>
+              <div class="anno step" style="left:31%; top:56%;"><span class="anno-num">2</span><span class="txt"><strong>Import Data</strong> in CargoWise</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Column mapping</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Data Import Wizard</div>
+          </div>
+          <div class="vp-annot" id="viewport-rse2">
+            <img src="CW_RECEIVES_SERIALS_2.png" alt="Data Import Wizard mapping" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1438/791;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_RECEIVES_SERIALS_2.png</span>
+              <p class="ph-desc">The <strong>Data Import Wizard — Mapping tab</strong>: the "From" panel on the left showing a CSV field (e.g. Field[0] with a serial value), and the "To" column list on the right. Highlight/arrow the <strong>drag from the CSV field to its target CargoWise column</strong>.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno" style="left:52%; top:13%; max-width:300px;">Drag the CSV column name into its corresponding mapping field</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receipt Step 8: Finalize the ASN -->
+      <div class="step-panel" data-panel="7">
+        <span class="step-pill">Step 8 of 8</span>
+        <h2>Finalize the ASN</h2>
+        <p class="step-description">Once goods have physically arrived and been verified: confirm <strong>Transport</strong> and <strong>Supplier</strong>, enter the <strong>Transport Ref.</strong> and <strong>Arrival Date</strong>, verify <strong>Total Units / Pallets / Packages</strong> and <strong>Total Line Weight &amp; Volume</strong>, and <strong>upload ALL paperwork</strong> to eDocs. Then finalize the receipt.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Receipt</div>
+          </div>
+          <div class="vp-annot" id="viewport-rfin">
+            <img src="CW_RECEIVES_FINALIZE.png" alt="Finalize an ASN" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1515/898;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_RECEIVES_FINALIZE.png</span>
+              <p class="ph-desc">A receipt ready to finalize, with red boxes around: the <strong>Transport</strong> and <strong>Supplier</strong> sections, <strong>Transport Ref.</strong>, <strong>Arrival Date</strong>, <strong>Total Units / Pallets / Packages</strong>, and <strong>Total Line Weight &amp; Volume</strong>. Add a note reminding to <strong>upload ALL paperwork</strong>.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno-box pulse" style="left:29.5%; top:5%; width:6.5%; height:5.5%;"></div>
+              <svg class="anno-svg" viewBox="0 0 1515 898" preserveAspectRatio="none">
+                <defs><marker id="ah-rfin" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="490" y1="150" x2="490" y2="82" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-rfin)"/>
+              </svg>
+              <div class="anno gold" style="left:32.5%; top:20%;">Upload <strong>ALL</strong> paperwork to eDocs before finalizing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</section><!-- /page-receipt -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: ORDER
+══════════════════════════════════════════════════════ -->
+<section id="page-order" class="page">
+  <div class="inner-header">
+    <button class="back-btn" onclick="navigate('home')">← Back</button>
+    <span class="inner-page-title">Create an Order</span>
+    <div class="header-nav">
+      <button class="hnav-btn" id="prev-order" onclick="stepDelta('page-order',-1)">‹ Prev</button>
+      <span class="hnav-count" id="count-order">Step 1 of 14</span>
+      <button class="hnav-btn primary" id="next-order" onclick="stepDelta('page-order',1)">Next Step ›</button>
+    </div>
+    <span class="badge outbound">OUTBOUND</span>
+  </div>
+  <div class="inner-layout">
+
+    <aside class="step-sidebar">
+
+      <div class="sidebar-step active" data-step="0" onclick="setOrderStep(0)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">1</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Navigate to Orders</span><span class="step-status status-progress">In Progress</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="1" onclick="setOrderStep(1)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">2</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Create New Order</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="2" onclick="setOrderStep(2)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">3</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">New Order Form</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="3" onclick="setOrderStep(3)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">4</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Add Line Items</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="4" onclick="setOrderStep(4)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">5</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Submit Order</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="5" onclick="setOrderStep(5)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">6</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Pick the Order</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="6" onclick="setOrderStep(6)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">7</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Generate Picking Slip</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="7" onclick="setOrderStep(7)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">8</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Archive Picking Slip</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="8" onclick="setOrderStep(8)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">9</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Print Delivery Labels</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="9" onclick="setOrderStep(9)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">10</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Generate Packing Slip</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="10" onclick="setOrderStep(10)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">11</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Release the Order</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="11" onclick="setOrderStep(11)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">12</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Capture Volume Shipped</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="12" onclick="setOrderStep(12)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">13</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Capture Serials / Assets</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="13" onclick="setOrderStep(13)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">14</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Upload Order Documents</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+    </aside>
+
+    <main class="step-content">
+
+      <!-- Order Step 1: Navigate to Orders -->
+      <div class="step-panel active" data-panel="0">
+        <span class="step-pill">Step 1 of 14</span><button class="next-step-btn" onclick="setOrderStep(1)">Next Step ›</button>
+        <h2>Navigate to the Orders Screen</h2>
+        <p class="step-description">Click <strong>Operate</strong> in the top menu, then click <strong>Warehouse</strong> in the left panel, then select <strong>Orders</strong> under Product Warehouse.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-o1">
+            <img src="CW_ORDERS_1.png" alt="CargoWise Orders Navigation" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-o1').style.display='flex';"/>
+            <div id="fallback-o1" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_ORDERS_1.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-o1">
+              <div class="hover-ring" id="hr-o1"></div>
+              <div class="ripple-ring" id="rr-o1"></div>
+              <svg class="cursor-svg" id="cur-o1" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-o1-op"><input type="checkbox" id="chk-o1-op" onclick="return false;"><span>Click Operate</span></label>
+          <label class="check-item" id="ci-o1-wh"><input type="checkbox" id="chk-o1-wh" onclick="return false;"><span>Click Warehouse</span></label>
+          <label class="check-item" id="ci-o1-or"><input type="checkbox" id="chk-o1-or" onclick="return false;"><span>Select Orders</span></label>
+          <button class="replay-btn" onclick="replayO1()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 2: Create New Order (Orders landing — click New) -->
+      <div class="step-panel" data-panel="1">
+        <span class="step-pill">Step 2 of 14</span><button class="next-step-btn" onclick="setOrderStep(2)">Next Step ›</button>
+        <h2>Create a New Order</h2>
+        <p class="step-description">From the Orders list screen, click the <strong>New</strong> button in the toolbar to open a blank New Order entry form.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / Orders
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-o2">
+            <img src="CW_ORDERS_2.png" alt="CargoWise Orders List" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-o2').style.display='flex';"/>
+            <div id="fallback-o2" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_ORDERS_2.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-o2">
+              <div class="hover-ring" id="hr-o2"></div>
+              <div class="ripple-ring" id="rr-o2"></div>
+              <svg class="cursor-svg" id="cur-o2" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-o2-new"><input type="checkbox" id="chk-o2-new" onclick="return false;"><span>Click New</span></label>
+          <button class="replay-btn" onclick="replayO2()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 3: New Order Form -->
+      <div class="step-panel" data-panel="2">
+        <span class="step-pill">Step 3 of 14</span><button class="next-step-btn" onclick="setOrderStep(3)">Next Step ›</button>
+        <h2>New Order Form</h2>
+        <p class="step-description">Fill in the three key parties using the <strong>[...]</strong> lookup buttons: select a <strong>Client</strong>, choose a <strong>Transport Company</strong>, and specify the <strong>Consignee</strong>. Also set the <strong>Whs.</strong> (Warehouse) field to indicate which facility will fulfill the order.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / Orders / New
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-o3">
+            <img src="CW_ORDERS_3.png" alt="CargoWise New Order Form" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-o3').style.display='flex';"/>
+            <div id="fallback-o3" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_ORDERS_3.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-o3">
+              <div class="hover-ring" id="hr-o3"></div>
+              <div class="ripple-ring" id="rr-o3"></div>
+              <svg class="cursor-svg" id="cur-o3" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-o3-cl"><input type="checkbox" id="chk-o3-cl" onclick="return false;"><span>Select Client</span></label>
+          <label class="check-item" id="ci-o3-tr"><input type="checkbox" id="chk-o3-tr" onclick="return false;"><span>Select Transport</span></label>
+          <label class="check-item" id="ci-o3-co"><input type="checkbox" id="chk-o3-co" onclick="return false;"><span>Select Consignee</span></label>
+          <button class="replay-btn" onclick="replayO3()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 4: Add Line Items -->
+      <div class="step-panel" data-panel="3">
+        <span class="step-pill">Step 4 of 14</span><button class="next-step-btn" onclick="setOrderStep(4)">Next Step ›</button>
+        <h2>Add Line Items</h2>
+        <p class="step-description">Click the <strong>Lines</strong> sub-tab to open the line items grid. Enter each product SKU and its quantity in the grid rows.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / Orders / New
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-o4">
+            <img src="CW_ORDERS_4.png" alt="CargoWise Order Lines Tab" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-o4').style.display='flex';"/>
+            <div id="fallback-o4" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_ORDERS_4.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-o4">
+              <div class="hover-ring" id="hr-o4"></div>
+              <div class="ripple-ring" id="rr-o4"></div>
+              <svg class="cursor-svg" id="cur-o4" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-o4-ln"><input type="checkbox" id="chk-o4-ln" onclick="return false;"><span>Click Lines tab</span></label>
+          <label class="check-item" id="ci-o4-pr"><input type="checkbox" id="chk-o4-pr" onclick="return false;"><span>Enter products &amp; quantities</span></label>
+          <button class="replay-btn" onclick="replayO4()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 5: Submit Order -->
+      <div class="step-panel" data-panel="4">
+        <span class="step-pill">Step 5 of 14</span><button class="next-step-btn" onclick="setOrderStep(5)">Next Step ›</button>
+        <h2>Submit the Order</h2>
+        <p class="step-description">Click the <strong>Entry</strong> tab to return to the order summary, then click <strong>Save &amp; Close</strong>. The <strong>Order No</strong> field will populate with the warehouse docket ID once saved.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">
+              <svg class="lock-icon" width="10" height="11" viewBox="0 0 10 11" fill="none"><rect x="1.5" y="5" width="7" height="5.5" rx="1" fill="#8899BB"/><path d="M2.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#8899BB" stroke-width="1.2"/></svg>
+              cargowise.logisticsplus.com / Orders / New
+            </div>
+          </div>
+          <div class="browser-viewport-o" id="viewport-o5">
+            <img src="CW_ORDERS_5.png" alt="CargoWise Save and Close Order" class="cw-screenshot-full"
+                 onerror="this.style.display='none'; document.getElementById('fallback-o5').style.display='flex';"/>
+            <div id="fallback-o5" class="img-fallback" style="display:none;">
+              <div class="fallback-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              <p>Place <strong>CW_ORDERS_5.png</strong> in the same folder as this HTML file.</p>
+            </div>
+            <div class="cursor-layer" id="cl-o5">
+              <div class="hover-ring" id="hr-o5"></div>
+              <div class="ripple-ring" id="rr-o5"></div>
+              <svg class="cursor-svg" id="cur-o5" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-o5-en"><input type="checkbox" id="chk-o5-en" onclick="return false;"><span>Click Entry tab</span></label>
+          <label class="check-item" id="ci-o5-sv"><input type="checkbox" id="chk-o5-sv" onclick="return false;"><span>Click Save &amp; Close</span></label>
+          <button class="replay-btn" onclick="replayO5()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 6: Pick the Order -->
+      <div class="step-panel" data-panel="5">
+        <span class="step-pill">Step 6 of 14</span><button class="next-step-btn" onclick="setOrderStep(6)">Next Step ›</button>
+        <h2>Pick the Order</h2>
+        <p class="step-description">Open the saved order and click the <strong>Pick</strong> button at the bottom-right of the entry screen. This creates the pick job used by the warehouse floor.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order</div>
+          </div>
+          <div class="vp-annot" id="viewport-opk">
+            <img src="CW_ORDERS_PICK.png" alt="Pick an Order" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1920/1032;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PICK.png</span>
+              <p class="ph-desc">A saved order open in the entry screen, with a red box around the <strong>Pick</strong> button in the bottom-right button row (Edit Line / Pick / Release).</p>
+            </div>
+            <div class="cursor-layer" id="cl-opk">
+              <div class="hover-ring" id="hr-opk"></div>
+              <div class="ripple-ring" id="rr-opk"></div>
+              <svg class="cursor-svg" id="cur-opk" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-opk-pk"><input type="checkbox" id="chk-opk-pk" onclick="return false;"><span>Click Pick</span></label>
+          <button class="replay-btn" onclick="replayOPK()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 7: Generate Picking Slip -->
+      <div class="step-panel" data-panel="6">
+        <span class="step-pill">Step 7 of 14</span><button class="next-step-btn" onclick="setOrderStep(7)">Next Step ›</button>
+        <h2>Generate a Picking Slip</h2>
+        <p class="step-description">From the Edit Pick screen, open the <strong>Documents</strong> menu and select <strong>Picking Slip</strong>. The <strong>Deliver Documents</strong> box pops up — click <strong>Preview</strong> to open the slip. Print it and follow the QC procedure below while picking:</p>
+
+        <ol class="qc-list">
+          <li><strong>Mark</strong> if any SKU needs to be Asset tagged or have its Serial number captured.</li>
+          <li><strong>Pick items</strong> and enter the Quantity picked on the slip.</li>
+          <li>A <strong>different staff member</strong> QCs all products on the pick and signs with initials (Picked By / Checked By boxes).</li>
+        </ol>
+
+        <h4 class="shot-label">Screenshot 1 — Documents menu</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Pick</div>
+          </div>
+          <div class="vp-annot" id="viewport-ppk">
+            <img src="CW_ORDERS_PICKSLIP_1.png" alt="Picking Slip menu" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1920/1032;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PICKSLIP_1.png</span>
+              <p class="ph-desc">The <strong>Edit Pick</strong> screen with the <strong>Documents menu open</strong> and "<strong>Picking Slip</strong>" highlighted in the list (the menu also shows Packing Slip, Picking Shortfall, Pick Order Summary, etc.).</p>
+            </div>
+            <div class="cursor-layer" id="cl-ppk">
+              <div class="hover-ring" id="hr-ppk"></div>
+              <div class="ripple-ring" id="rr-ppk"></div>
+              <svg class="cursor-svg" id="cur-ppk" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-ppk-dm"><input type="checkbox" id="chk-ppk-dm" onclick="return false;"><span>Open Documents menu</span></label>
+          <label class="check-item" id="ci-ppk-ps"><input type="checkbox" id="chk-ppk-ps" onclick="return false;"><span>Click Picking Slip</span></label>
+          <button class="replay-btn" onclick="replayPPK()">↺ Replay</button>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Deliver Documents → Preview</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Pick / Deliver Documents</div>
+          </div>
+          <div class="vp-annot" id="viewport-ps1a">
+            <img src="CW_ORDERS_PICKSLIP_1a.png" alt="Deliver Documents dialog — click Preview" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1920/1032;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PICKSLIP_1a.png</span>
+              <p class="ph-desc">The <strong>Deliver Documents</strong> dialog that pops up after choosing Picking Slip — click the <strong>Preview</strong> button to open the slip.</p>
+            </div>
+            <div class="anno-layer">
+              <svg class="anno-svg" viewBox="0 0 1920 1032" preserveAspectRatio="none">
+                <defs><marker id="ah-ps1a" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="1148" y1="820" x2="1148" y2="710" stroke="#F0D590" stroke-width="4" marker-end="url(#ah-ps1a)"/>
+              </svg>
+              <div class="anno gold" style="left:59.8%; top:82%;">Click <strong>Preview</strong> to open the slip</div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="shot-label">Screenshot 3 — Printed picking slip</h4>
+        <div class="browser-mockup doc">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">Picking Slip — printed document</div>
+          </div>
+          <div class="vp-annot" id="viewport-ps2">
+            <img src="CW_ORDERS_PICKSLIP_2.png" alt="Printed picking slip with QC steps" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:676/923;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PICKSLIP_2.png</span>
+              <p class="ph-desc">A generated <strong>Picking Slip document</strong> (PDF preview is fine). Add callouts for: the <strong>Picked Qty column</strong> (where qty picked is written), and the <strong>Page Totals / Running Totals</strong> boxes at the bottom with the <strong>PICKED BY</strong> and <strong>CHECKED BY</strong> signature lines.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno step" style="left:26%; top:14%; max-width:210px;"><span class="anno-num">1</span><span class="txt">Mark any SKU needing an <strong>asset tag</strong> or <strong>serial-number</strong> capture</span></div>
+              <div class="anno step" style="left:83%; top:24%; max-width:180px; transform:translate(-90%,-50%);"><span class="anno-num">2</span><span class="txt">Pick items and enter <strong>Qty Picked</strong></span></div>
+              <div class="anno step" style="left:50%; top:63%; max-width:250px;"><span class="anno-num">3</span><span class="txt">A <strong>different staff member</strong> QCs all products and signs the <strong>Picked By / Checked By</strong> lines with initials</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Step 8: Archive Picking Slip -->
+      <div class="step-panel" data-panel="7">
+        <span class="step-pill">Step 8 of 14</span><button class="next-step-btn" onclick="setOrderStep(8)">Next Step ›</button>
+        <h2>Archive the Picking Slip</h2>
+        <p class="step-description">After the slip is signed, scan it and <strong>drag the document anywhere</strong> onto the order to open the eDocs dialog. Set the Document Type to <strong>WPS</strong> (Warehouse Picking Slip) and save.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order / eDocs</div>
+          </div>
+          <div class="vp-annot" id="viewport-arch">
+            <img src="CW_ORDERS_ARCHIVE.png" alt="Archive picking slip under WPS" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1545/896;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_ARCHIVE.png</span>
+              <p class="ph-desc">An order with a file being dragged in and the <strong>Edit document dialog open</strong>: red box around the <strong>Document Type dropdown set to WPS</strong>. Two callouts: "Drag document anywhere here" and "Save under WPS".</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno-box pulse" style="left:44.3%; top:35.2%; width:5.6%; height:4%;"></div>
+              <svg class="anno-svg" viewBox="0 0 1545 896" preserveAspectRatio="none">
+                <defs><marker id="ah-arch" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="1030" y1="250" x2="775" y2="335" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-arch)"/>
+              </svg>
+              <div class="anno" style="left:70%; top:20%; max-width:250px;">Open the Pick Slip location, then click and <strong>drag it anywhere</strong> into the open order in CW. Save it as <strong>Document Type = WPS</strong>.</div>
+            </div>
+            <div class="cursor-layer" id="cl-arc">
+              <div class="hover-ring" id="hr-arc"></div>
+              <div class="ripple-ring" id="rr-arc"></div>
+              <svg class="cursor-svg" id="cur-arc" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-arc-dt"><input type="checkbox" id="chk-arc-dt" onclick="return false;"><span>Click the Document Type dropdown</span></label>
+          <button class="replay-btn" onclick="replayARC()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 9: Print Delivery Labels -->
+      <div class="step-panel" data-panel="8">
+        <span class="step-pill">Step 9 of 14</span><button class="next-step-btn" onclick="setOrderStep(9)">Next Step ›</button>
+        <h2>Print Delivery Labels</h2>
+        <p class="step-description">Open <strong>Documents → Delivery Labels</strong>. In the Labels Printing dialog, set the <strong>Number of Labels to Print</strong> based on the number of packages/pallets you have, then print and <strong>label all boxes</strong>.</p>
+
+        <h4 class="shot-label">Screenshot 1 — Delivery Labels dialog</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order</div>
+          </div>
+          <div class="vp-annot" id="viewport-lbl">
+            <img src="CW_ORDERS_LABELS_1.png" alt="Delivery Labels printing dialog" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1564/909;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_LABELS_1.png</span>
+              <p class="ph-desc">The order's <strong>Documents menu open with "Delivery Labels" highlighted</strong>, plus the <strong>Labels Printing dialog</strong> showing the Order Number row — red box around the <strong>"Number of Labels to Print"</strong> field.</p>
+            </div>
+            <div class="cursor-layer" id="cl-lbl">
+              <div class="hover-ring" id="hr-lbl"></div>
+              <div class="ripple-ring" id="rr-lbl"></div>
+              <svg class="cursor-svg" id="cur-lbl" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-lbl-dm"><input type="checkbox" id="chk-lbl-dm" onclick="return false;"><span>Open Documents menu</span></label>
+          <label class="check-item" id="ci-lbl-dl"><input type="checkbox" id="chk-lbl-dl" onclick="return false;"><span>Click Delivery Labels</span></label>
+          <button class="replay-btn" onclick="replayLBL()">↺ Replay</button>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Printed box label</h4>
+        <div class="browser-mockup doc">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">Warehouse Order Label — printed document</div>
+          </div>
+          <div class="vp-annot" id="viewport-lbl2">
+            <img src="CW_ORDERS_LABELS_2.png" alt="Sample warehouse order label" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:520/497;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_LABELS_2.png</span>
+              <p class="ph-desc">A sample <strong>printed Warehouse Order label</strong> showing the package count ("1 of 6"), <strong>Consignee address</strong>, <strong>Destination</strong>, and <strong>Reference</strong>. Callout: "Label all boxes".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Step 10: Generate Packing Slip -->
+      <div class="step-panel" data-panel="9">
+        <span class="step-pill">Step 10 of 14</span><button class="next-step-btn" onclick="setOrderStep(10)">Next Step ›</button>
+        <h2>Generate a Packing Slip</h2>
+        <p class="step-description">Open <strong>Documents → Packing Slip</strong> and print it — <strong>include it on all packages</strong>. If the shipment has <strong>more than one pallet, generate a packing list per pallet</strong>: in the Deliver Documents dialog, set the Type to Excel to download an editable sheet.</p>
+
+        <h4 class="shot-label">Screenshot 1 — Documents menu</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order</div>
+          </div>
+          <div class="vp-annot" id="viewport-pks">
+            <img src="CW_ORDERS_PACKSLIP_1.png" alt="Packing Slip menu" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1544/898;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PACKSLIP_1.png</span>
+              <p class="ph-desc">The order's <strong>Documents menu open</strong> with "<strong>Packing Slip</strong>" highlighted at the top of the list.</p>
+            </div>
+            <div class="cursor-layer" id="cl-pks">
+              <div class="hover-ring" id="hr-pks"></div>
+              <div class="ripple-ring" id="rr-pks"></div>
+              <svg class="cursor-svg" id="cur-pks" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-pks-dm"><input type="checkbox" id="chk-pks-dm" onclick="return false;"><span>Open Documents menu</span></label>
+          <label class="check-item" id="ci-pks-ps"><input type="checkbox" id="chk-pks-ps" onclick="return false;"><span>Click Packing Slip</span></label>
+          <button class="replay-btn" onclick="replayPKS()">↺ Replay</button>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Printed packing slip</h4>
+        <div class="browser-mockup doc">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">Packing Slip — printed document</div>
+          </div>
+          <div class="vp-annot" id="viewport-pks2">
+            <img src="CW_ORDERS_PACKSLIP_2.png" alt="Printed packing slip" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:676/923;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PACKSLIP_2.png</span>
+              <p class="ph-desc">The generated <strong>LP-branded Packing Slip document</strong> showing order/pick numbers, client &amp; consignee blocks, product lines with Qty Ordered / Qty Sent, and the <strong>Packed By / Checked By</strong> signature section. Callout: "Include on all packages".</p>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="shot-label">Screenshot 3 — One packing list per pallet</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Deliver Documents</div>
+          </div>
+          <div class="vp-annot" id="viewport-ps3">
+            <img src="CW_ORDERS_PACKSLIP_3.png" alt="Deliver Documents dialog" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1545/898;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_PACKSLIP_3.png</span>
+              <p class="ph-desc">The <strong>Deliver Documents dialog</strong> over the order, with a red box around the <strong>Type dropdown</strong> in the Recipients grid. Callout: "<strong>Download as an Excel sheet to edit</strong>" (used to make one packing list per pallet).</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno" style="left:46%; top:52%; max-width:270px;">If the shipment has <strong>more than one pallet</strong>, create a separate <strong>packing list per pallet</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Step 11: Release the Order -->
+      <div class="step-panel" data-panel="10">
+        <span class="step-pill">Step 11 of 14</span><button class="next-step-btn" onclick="setOrderStep(11)">Next Step ›</button>
+        <h2>Release the Order</h2>
+        <p class="step-description">When the order is picked, packed, and labeled, click the <strong>Release</strong> button at the bottom-right of the order entry screen.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order</div>
+          </div>
+          <div class="vp-annot" id="viewport-orl">
+            <img src="CW_ORDERS_RELEASE.png" alt="Release the order" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1547/895;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_RELEASE.png</span>
+              <p class="ph-desc">An order in <strong>PICKING</strong> status with a red box + arrow on the <strong>Release</strong> button in the bottom-right button row (Edit Line / Pick / Release).</p>
+            </div>
+            <div class="cursor-layer" id="cl-orl">
+              <div class="hover-ring" id="hr-orl"></div>
+              <div class="ripple-ring" id="rr-orl"></div>
+              <svg class="cursor-svg" id="cur-orl" viewBox="0 0 22 26"><path d="M3 2.5 L3 19.5 L7.2 15.2 L11.2 23 L13.5 21.9 L9.5 14.1 L15.5 14.1 Z" fill="white" stroke="#1a1a3a" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="step-checks">
+          <label class="check-item" id="ci-orl-rl"><input type="checkbox" id="chk-orl-rl" onclick="return false;"><span>Click Release</span></label>
+          <button class="replay-btn" onclick="replayORL()">↺ Replay</button>
+        </div>
+      </div>
+
+      <!-- Order Step 12: Capture Volume Shipped -->
+      <div class="step-panel" data-panel="11">
+        <span class="step-pill">Step 12 of 14</span><button class="next-step-btn" onclick="setOrderStep(12)">Next Step ›</button>
+        <h2>Capture Volume Shipped</h2>
+        <p class="step-description">On the <strong>Edit Release</strong> screen, capture the physical shipment quantities: <strong>Packages Sent</strong> and <strong>Pallets Sent</strong> (plus weight/volume sent if known).</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Release</div>
+          </div>
+          <div class="vp-annot" id="viewport-vol">
+            <img src="CW_ORDERS_VOLUME.png" alt="Capture volume shipped" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1532/917;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_VOLUME.png</span>
+              <p class="ph-desc">The <strong>Edit Release</strong> screen (Release tab of Order Details) with a red box around the <strong>Packages Sent</strong> and <strong>Pallets Sent</strong> fields on the left side.</p>
+            </div>
+            <div class="anno-layer">
+              <svg class="anno-svg" viewBox="0 0 1532 917" preserveAspectRatio="none">
+                <defs><marker id="ah-vol" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="470" y1="480" x2="300" y2="492" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-vol)"/>
+              </svg>
+              <div class="anno" style="left:41%; top:52%; max-width:220px;">Capture the number of <strong>packages</strong> and <strong>pallets sent</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Step 13: Capture Serials / Assets -->
+      <div class="step-panel" data-panel="12">
+        <span class="step-pill">Step 13 of 14</span><button class="next-step-btn" onclick="setOrderStep(13)">Next Step ›</button>
+        <h2>Capture Serials / Asset Tags</h2>
+        <p class="step-description">Capture serial numbers / asset tags at release:</p>
+        <ol class="qc-list">
+          <li>Type something in the <strong>Serial number field</strong> on the release line.</li>
+          <li>Right-click and choose <strong>Import Data…</strong></li>
+          <li>Browse to the <strong>CSV</strong> file you created with all the serials.</li>
+          <li>In the Mapping tab, click and drag each CSV field to its corresponding CargoWise field (e.g. Sage Serial Numbers, Asset Tag).</li>
+        </ol>
+
+        <h4 class="shot-label">Screenshot 1 — Import serials at release</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Release</div>
+          </div>
+          <div class="vp-annot" id="viewport-ose1">
+            <img src="CW_ORDERS_SERIALS_1.png" alt="Import serials at release" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1552/928;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_SERIALS_1.png</span>
+              <p class="ph-desc">The <strong>Edit Release</strong> screen showing: the <strong>Sage Serial Numbers field</strong> in the Breakdown of Quantity Met grid (callout: "Type something in the Serial number field"), the <strong>right-click menu with Import Data</strong> highlighted, and the <strong>Data Import Wizard file browser</strong> pointing at the serials <strong>CSV</strong>.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno step" style="left:11%; top:45%; max-width:170px;"><span class="anno-num">1</span><span class="txt">Click the <strong>Order Lines</strong> tab</span></div>
+              <div class="anno step" style="left:61%; top:15%; max-width:210px;"><span class="anno-num">2</span><span class="txt">Right-click the <strong>Serial Number</strong> column header</span></div>
+              <div class="anno step" style="left:72%; top:77%; max-width:230px;"><span class="anno-num">3</span><span class="txt">Click <strong>Import Data</strong>, then select the serials <strong>CSV</strong> you created</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="shot-label">Screenshot 2 — Map CSV fields</h4>
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Data Import Wizard</div>
+          </div>
+          <div class="vp-annot" id="viewport-ose2">
+            <img src="CW_ORDERS_SERIALS_2.png" alt="Map serial CSV fields" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1420/784;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_SERIALS_2.png</span>
+              <p class="ph-desc">The <strong>Data Import Wizard — Mapping tab</strong> at release: CSV fields on the left (Field[0], Field[1]…), target columns on the right (<strong>Quantity Met, Asset Tag, Project Name, Sage Serial Numbers</strong>). Arrow the drag: "Click and drag the CSV field to its corresponding field in CWs".</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno" style="left:37%; top:47%; max-width:300px;">Click and drag the CSV field (<strong>Serial Number</strong>) to its corresponding field in the Import Wizard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Step 14: Upload Order Documents -->
+      <div class="step-panel" data-panel="13">
+        <span class="step-pill">Step 14 of 14</span>
+        <h2>Upload All Order-Related Documents</h2>
+        <p class="step-description">On the order's <strong>eDocs</strong> tab, upload the BOL, labels, receipts, and POD into Document Storage using these document type codes:</p>
+
+        <table class="doc-codes">
+          <tr><td>POD</td><td>Proof of Delivery</td></tr>
+          <tr><td>TRA</td><td>Label</td></tr>
+          <tr><td>BOL</td><td>Bill of Lading</td></tr>
+          <tr><td>CIV</td><td>Commercial Invoice</td></tr>
+          <tr><td>PYC</td><td>Receipt</td></tr>
+        </table>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order / eDocs</div>
+          </div>
+          <div class="vp-annot" id="viewport-edoc">
+            <img src="CW_ORDERS_EDOCS.png" alt="Upload order documents to eDocs" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1534/915;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_ORDERS_EDOCS.png</span>
+              <p class="ph-desc">The order's <strong>eDocs tab → Document Storage</strong> grid, with a red box around the empty document list area and a callout "<strong>BOL / Labels / Receipts + POD</strong>" showing where files get dropped.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno-box pulse" style="left:50.5%; top:87.5%; width:9.5%; height:4.5%;"></div>
+              <svg class="anno-svg" viewBox="0 0 1534 915" preserveAspectRatio="none">
+                <defs><marker id="ah-edoc" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#F0D590"/></marker></defs>
+                <line x1="560" y1="470" x2="820" y2="805" stroke="#F0D590" stroke-width="3" marker-end="url(#ah-edoc)"/>
+              </svg>
+              <div class="anno" style="left:30%; top:44%; max-width:250px;">Upload <strong>all</strong> order-related documents: POD, Label, BOL, Commercial Invoice, Receipt, etc.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</section><!-- /page-order -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE: MILESTONES
+══════════════════════════════════════════════════════ -->
+<section id="page-milestones" class="page">
+  <div class="inner-header">
+    <button class="back-btn" onclick="navigate('home')">← Back</button>
+    <span class="inner-page-title">Milestone Management</span>
+    <div class="header-nav">
+      <button class="hnav-btn" id="prev-milestones" onclick="stepDelta('page-milestones',-1)">‹ Prev</button>
+      <span class="hnav-count" id="count-milestones">Step 1 of 2</span>
+      <button class="hnav-btn primary" id="next-milestones" onclick="stepDelta('page-milestones',1)">Next Step ›</button>
+    </div>
+    <span class="badge milestone">TRACKING</span>
+  </div>
+  <div class="inner-layout">
+
+    <aside class="step-sidebar">
+
+      <div class="sidebar-step active" data-step="0" onclick="setMilestoneStep(0)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">1</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Capture ETA</span><span class="step-status status-progress">In Progress</span></div>
+      </div>
+
+      <div class="sidebar-step" data-step="1" onclick="setMilestoneStep(1)">
+        <div class="step-track"><div class="step-line top"></div><div class="step-dot">2</div><div class="step-line bot"></div></div>
+        <div class="step-meta"><span class="step-label">Actual Delivery Date</span><span class="step-status status-next">Up Next</span></div>
+      </div>
+
+    </aside>
+
+    <main class="step-content">
+
+      <!-- Milestone Step 1: Capture ETA -->
+      <div class="step-panel active" data-panel="0">
+        <span class="step-pill">Step 1 of 2</span><button class="next-step-btn" onclick="setMilestoneStep(1)">Next Step ›</button>
+        <h2>Capture the ETA</h2>
+        <p class="step-description">The ETA <strong>must be populated when/before an order is finalized</strong>. Open the order's <strong>Workflow &amp; Tracking</strong> tab → <strong>Milestones</strong>, and enter the ETA in the <strong>Estimated Date</strong> column on the Delivered milestone row.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order / Workflow &amp; Tracking</div>
+          </div>
+          <div class="vp-annot" id="viewport-meta">
+            <img src="CW_MILESTONES_ETA.png" alt="Milestone ETA capture" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1545/897;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_MILESTONES_ETA.png</span>
+              <p class="ph-desc">An order's <strong>Workflow &amp; Tracking tab → Milestones</strong> sub-tab, showing the Shipped and Delivered milestone rows. Red box + arrow on the empty <strong>Estimated Date</strong> cell with an "<strong>ETA</strong>" callout.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno" style="left:40%; top:44%; max-width:260px;">The <strong>ETA</strong> must be populated when — or before — an order is <strong>Finalized</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestone Step 2: Actual Delivery Date -->
+      <div class="step-panel" data-panel="1">
+        <span class="step-pill">Step 2 of 2</span>
+        <h2>Capture the Actual Delivery Date</h2>
+        <p class="step-description">When delivery is confirmed, return to <strong>Workflow &amp; Tracking → Milestones</strong> and record the date in the <strong>Actual Start</strong> column on the Delivered milestone row.</p>
+
+        <div class="browser-mockup">
+          <div class="browser-chrome">
+            <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+            <div class="address-bar">cargowise.logisticsplus.com / Edit Order / Workflow &amp; Tracking</div>
+          </div>
+          <div class="vp-annot" id="viewport-mdel">
+            <img src="CW_MILESTONES_DELIVERY.png" alt="Actual delivery date capture" class="cw-shot"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <div class="shot-placeholder" style="display:none; aspect-ratio:1548/899;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span class="ph-tag">Screenshot needed</span>
+              <span class="ph-file">CW_MILESTONES_DELIVERY.png</span>
+              <p class="ph-desc">Same <strong>Milestones</strong> screen: red boxes on the <strong>Workflow &amp; Tracking tab</strong> and <strong>Milestones sub-tab</strong> at the top, and on the populated date in the <strong>Actual Start</strong> column, with an "<strong>Actual Delivery Date</strong>" callout.</p>
+            </div>
+            <div class="anno-layer">
+              <div class="anno" style="left:17%; top:42%; max-width:230px;">The <strong>actual delivery date</strong> must be entered once delivery is confirmed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</section><!-- /page-milestones -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <span>© 2026 Logistics Plus, Inc. — Internal Use Only</span>
+  <span>Warehouse SOP v2.0</span>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+/* ──────────────────────────────────────────
+   LIVE DATE
+────────────────────────────────────────── */
+(function updateDate() {
+  const el = document.getElementById('live-date');
+  if (!el) return;
+  const d = new Date();
+  el.textContent = d.toLocaleDateString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+  setInterval(() => {
+    el.textContent = new Date().toLocaleDateString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+  }, 60000);
+})();
+
+/* ──────────────────────────────────────────
+   TIMER POOLS
+────────────────────────────────────────── */
+let r1Timers=[], r2Timers=[], r3Timers=[], r4Timers=[], r5Timers=[];
+let o1Timers=[], o2Timers=[], o3Timers=[], o4Timers=[], o5Timers=[];
+let rspTimers=[], orlTimers=[];
+let opkTimers=[], ppkTimers=[], arcTimers=[], lblTimers=[], pksTimers=[];
+let r1Running=false, r2Running=false, r3Running=false, r4Running=false, r5Running=false;
+let o1Running=false, o2Running=false, o3Running=false, o4Running=false, o5Running=false;
+let rspRunning=false, orlRunning=false;
+let opkRunning=false, ppkRunning=false, arcRunning=false, lblRunning=false, pksRunning=false;
+
+function stopAllAnims() {
+  r1Running=false; r2Running=false; r3Running=false; r4Running=false; r5Running=false;
+  o1Running=false; o2Running=false; o3Running=false; o4Running=false; o5Running=false;
+  rspRunning=false; orlRunning=false;
+  opkRunning=false; ppkRunning=false; arcRunning=false; lblRunning=false; pksRunning=false;
+  [r1Timers,r2Timers,r3Timers,r4Timers,r5Timers,o1Timers,o2Timers,o3Timers,o4Timers,o5Timers,rspTimers,orlTimers,opkTimers,ppkTimers,arcTimers,lblTimers,pksTimers].forEach(arr=>{
+    arr.forEach(clearTimeout); arr.length=0;
+  });
+}
+
+function at(arr, delay, fn) { arr.push(setTimeout(fn, delay)); }
+
+/* ──────────────────────────────────────────
+   NAVIGATION
+────────────────────────────────────────── */
+function navigate(page) {
+  stopAllAnims();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  if (page === 'home') {
+    document.getElementById('page-home').classList.add('active');
+  } else if (page === 'receipt') {
+    document.getElementById('page-receipt').classList.add('active');
+    setReceiptStep(0);
+  } else if (page === 'order') {
+    document.getElementById('page-order').classList.add('active');
+    setOrderStep(0);
+  } else if (page === 'milestones') {
+    document.getElementById('page-milestones').classList.add('active');
+    setMilestoneStep(0);
+  }
+}
+
+function updateStepStatuses(pageId, idx) {
+  document.querySelectorAll('#'+pageId+' .sidebar-step').forEach(function(el,i){
+    var s=el.querySelector('.step-status'); if(!s)return;
+    s.className='step-status';
+    if(i<idx){s.classList.add('status-done');s.textContent='Complete';}
+    else if(i===idx){s.classList.add('status-progress');s.textContent='In Progress';}
+    else{s.classList.add('status-next');s.textContent='Up Next';}
+  });
+  updateHeaderNav(pageId, idx);
+}
+
+/* Sync the frozen header nav (count + enabled/disabled arrows) */
+function updateHeaderNav(pageId, idx) {
+  var total=document.querySelectorAll('#'+pageId+' .step-panel').length;
+  var suffix=pageId.replace('page-','');
+  var cnt=document.getElementById('count-'+suffix);
+  var prev=document.getElementById('prev-'+suffix);
+  var next=document.getElementById('next-'+suffix);
+  if(cnt) cnt.textContent='Step '+(idx+1)+' of '+total;
+  if(prev) prev.disabled=(idx<=0);
+  if(next) next.disabled=(idx>=total-1);
+}
+
+/* Advance/retreat the active step of a module (used by the frozen header nav) */
+function stepDelta(pageId, d) {
+  var panels=document.querySelectorAll('#'+pageId+' .step-panel');
+  var total=panels.length, cur=0;
+  panels.forEach(function(p,i){ if(p.classList.contains('active')) cur=i; });
+  var n=Math.min(total-1, Math.max(0, cur+d));
+  if(n===cur) return;
+  if(pageId==='page-receipt') setReceiptStep(n);
+  else if(pageId==='page-order') setOrderStep(n);
+  else if(pageId==='page-milestones') setMilestoneStep(n);
+  document.querySelector('#'+pageId+' .step-content').scrollTop=0;
+}
+
+function setReceiptStep(idx) {
+  stopAllAnims();
+  document.querySelectorAll('#page-receipt .sidebar-step').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('#page-receipt .step-panel').forEach((el,i) => el.classList.toggle('active', i===idx));
+  updateStepStatuses('page-receipt', idx);
+  if (idx===0) startR1Anim();
+  if (idx===1) startR2Anim();
+  if (idx===2) startR3Anim();
+  if (idx===3) startR4Anim();
+  if (idx===4) startR5Anim();
+  if (idx===5) startRSPAnim();
+}
+
+function setOrderStep(idx) {
+  stopAllAnims();
+  document.querySelectorAll('#page-order .sidebar-step').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('#page-order .step-panel').forEach((el,i) => el.classList.toggle('active', i===idx));
+  updateStepStatuses('page-order', idx);
+  if (idx===0) startO1Anim();
+  if (idx===1) startO2Anim();
+  if (idx===2) startO3Anim();
+  if (idx===3) startO4Anim();
+  if (idx===4) startO5Anim();
+  if (idx===5) startOPKAnim();
+  if (idx===6) startPPKAnim();
+  if (idx===7) startARCAnim();
+  if (idx===8) startLBLAnim();
+  if (idx===9) startPKSAnim();
+  if (idx===10) startORLAnim();
+}
+
+function setMilestoneStep(idx) {
+  stopAllAnims();
+  document.querySelectorAll('#page-milestones .sidebar-step').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('#page-milestones .step-panel').forEach((el,i) => el.classList.toggle('active', i===idx));
+  updateStepStatuses('page-milestones', idx);
+}
+
+/* ──────────────────────────────────────────
+   CURSOR HELPERS
+────────────────────────────────────────── */
+/* Returns {sx, sy} scale factors for a cursor/ring/ripple element.
+   All animation coords are authored at 680×378.
+   For s2 we return 1:1 because its loop uses getBoundingClientRect (already actual px). */
+function getVpScale(id) {
+  const suffix = id.substring(id.indexOf('-') + 1); // 'cur-o3' → 'o3', 'hr-s1' → 's1'
+  // (no special-cases needed — all receipt steps now use real screenshots)
+  const vp = document.getElementById('viewport-' + suffix);
+  if (!vp) return { sx: 1, sy: 1 };
+  return { sx: vp.offsetWidth / 680, sy: vp.offsetHeight / 378 };
+}
+function moveCursor(id, x, y) {
+  const el=document.getElementById(id); if(!el)return;
+  const {sx,sy}=getVpScale(id);
+  el.style.left=(x*sx)+'px'; el.style.top=(y*sy)+'px';
+}
+function showRing(id, x, y) {
+  const el=document.getElementById(id); if(!el)return;
+  const {sx,sy}=getVpScale(id);
+  el.style.left=(x*sx-19)+'px'; el.style.top=(y*sy-19)+'px';
+  el.style.animation='none'; el.style.opacity='1'; void el.offsetHeight;
+  el.style.animation='pulseRing 0.72s ease-in-out infinite';
+}
+function hideRing(id) {
+  const el=document.getElementById(id); if(el){el.style.opacity='0';el.style.animation='none';}
+}
+function fireRipple(id, x, y) {
+  const el=document.getElementById(id); if(!el)return;
+  const {sx,sy}=getVpScale(id);
+  el.style.left=(x*sx-16)+'px'; el.style.top=(y*sy-16)+'px';
+  el.style.animation='none'; el.style.opacity='1'; void el.offsetHeight;
+  el.style.animation='rippleExpand 0.55s ease-out forwards';
+}
+function tickCheck(checkId, labelId) {
+  const c=document.getElementById(checkId); if(c)c.checked=true;
+  const l=document.getElementById(labelId); if(l)l.classList.add('checked');
+}
+function resetCheck(checkId, labelId) {
+  const c=document.getElementById(checkId); if(c)c.checked=false;
+  const l=document.getElementById(labelId); if(l)l.classList.remove('checked');
+}
+function resetCursor(curId, x, y) {
+  const el=document.getElementById(curId); if(!el)return;
+  const {sx,sy}=getVpScale(curId);
+  el.style.transition='none'; el.style.left=(x*sx)+'px'; el.style.top=(y*sy)+'px';
+  void el.offsetHeight;
+  el.style.transition='left 0.68s cubic-bezier(.4,0,.2,1),top 0.68s cubic-bezier(.4,0,.2,1)';
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT STEP 1 ANIMATION
+   CW_RECEIVES_1.png (1377×765 → display, scale≈0.494)
+   Operate(53,55)→(26,27)  Warehouse(97,246)→(48,122)  Receive(643,401)→(318,198)
+────────────────────────────────────────── */
+function startR1Anim(){r1Running=true;r1Timers.forEach(clearTimeout);r1Timers=[];runR1Loop();}
+function replayR1(){if(!r1Running)r1Running=true;r1Timers.forEach(clearTimeout);r1Timers=[];runR1Loop();}
+function runR1Loop(){
+  if(!r1Running)return;
+  resetCheck('chk-r1-op','ci-r1-op'); resetCheck('chk-r1-wh','ci-r1-wh'); resetCheck('chk-r1-rv','ci-r1-rv');
+  hideRing('hr-r1'); resetCursor('cur-r1',335,342);
+  const a=(t,fn)=>at(r1Timers,t,fn);
+  a(420,()=>{if(!r1Running)return;moveCursor('cur-r1',26,27);});
+  a(1120,()=>{if(!r1Running)return;showRing('hr-r1',26,27);});
+  a(1600,()=>{if(!r1Running)return;hideRing('hr-r1');fireRipple('rr-r1',26,27);tickCheck('chk-r1-op','ci-r1-op');});
+  a(1950,()=>{if(!r1Running)return;moveCursor('cur-r1',48,122);});
+  a(2650,()=>{if(!r1Running)return;showRing('hr-r1',48,122);});
+  a(3130,()=>{if(!r1Running)return;hideRing('hr-r1');fireRipple('rr-r1',48,122);tickCheck('chk-r1-wh','ci-r1-wh');});
+  a(3480,()=>{if(!r1Running)return;moveCursor('cur-r1',318,198);});
+  a(4180,()=>{if(!r1Running)return;showRing('hr-r1',318,198);});
+  a(4660,()=>{if(!r1Running)return;hideRing('hr-r1');fireRipple('rr-r1',318,198);tickCheck('chk-r1-rv','ci-r1-rv');});
+  a(9500,()=>{if(r1Running)runR1Loop();});
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT STEP 2 ANIMATION
+   CW_RECEIVES_2.png (1380×764 → display, scale≈0.493)
+   New button(84,94)→(41,46)
+────────────────────────────────────────── */
+function startR2Anim(){r2Running=true;r2Timers.forEach(clearTimeout);r2Timers=[];runR2Loop();}
+function replayR2(){if(!r2Running)r2Running=true;r2Timers.forEach(clearTimeout);r2Timers=[];runR2Loop();}
+function runR2Loop(){
+  if(!r2Running)return;
+  resetCheck('chk-r2-new','ci-r2-new'); hideRing('hr-r2'); resetCursor('cur-r2',340,280);
+  const a=(t,fn)=>at(r2Timers,t,fn);
+  a(420,()=>{if(!r2Running)return;moveCursor('cur-r2',41,46);});
+  a(1120,()=>{if(!r2Running)return;showRing('hr-r2',41,46);});
+  a(1600,()=>{if(!r2Running)return;hideRing('hr-r2');fireRipple('rr-r2',41,46);tickCheck('chk-r2-new','ci-r2-new');});
+  a(5500,()=>{if(r2Running)runR2Loop();});
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT STEP 3 ANIMATION
+   CW_RECEIVES_3.png (1383×766 → display, scale≈0.492)
+   Client(55,122)→(27,60)  Whs.(67,273)→(33,134)
+────────────────────────────────────────── */
+function startR3Anim(){r3Running=true;r3Timers.forEach(clearTimeout);r3Timers=[];runR3Loop();}
+function replayR3(){if(!r3Running)r3Running=true;r3Timers.forEach(clearTimeout);r3Timers=[];runR3Loop();}
+function runR3Loop(){
+  if(!r3Running)return;
+  resetCheck('chk-r3-cl','ci-r3-cl'); resetCheck('chk-r3-wh','ci-r3-wh');
+  hideRing('hr-r3'); resetCursor('cur-r3',340,280);
+  const a=(t,fn)=>at(r3Timers,t,fn);
+  a(420,()=>{if(!r3Running)return;moveCursor('cur-r3',27,60);});
+  a(1120,()=>{if(!r3Running)return;showRing('hr-r3',27,60);});
+  a(1600,()=>{if(!r3Running)return;hideRing('hr-r3');fireRipple('rr-r3',27,60);tickCheck('chk-r3-cl','ci-r3-cl');});
+  a(1950,()=>{if(!r3Running)return;moveCursor('cur-r3',33,134);});
+  a(2650,()=>{if(!r3Running)return;showRing('hr-r3',33,134);});
+  a(3130,()=>{if(!r3Running)return;hideRing('hr-r3');fireRipple('rr-r3',33,134);tickCheck('chk-r3-wh','ci-r3-wh');});
+  a(7500,()=>{if(r3Running)runR3Loop();});
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT STEP 4 ANIMATION
+   CW_RECEIVES_5.png (1382×766 → display, scale≈0.492)
+   Lines tab(73,84)→(36,41)  First row(100,124)→(49,61)
+────────────────────────────────────────── */
+function startR4Anim(){r4Running=true;r4Timers.forEach(clearTimeout);r4Timers=[];runR4Loop();}
+function replayR4(){if(!r4Running)r4Running=true;r4Timers.forEach(clearTimeout);r4Timers=[];runR4Loop();}
+function runR4Loop(){
+  if(!r4Running)return;
+  resetCheck('chk-r4-lt','ci-r4-lt'); resetCheck('chk-r4-rw','ci-r4-rw'); resetCheck('chk-r4-pk','ci-r4-pk');
+  hideRing('hr-r4'); resetCursor('cur-r4',340,280);
+  const a=(t,fn)=>at(r4Timers,t,fn);
+  a(420,()=>{if(!r4Running)return;moveCursor('cur-r4',36,41);});
+  a(1120,()=>{if(!r4Running)return;showRing('hr-r4',36,41);});
+  a(1600,()=>{if(!r4Running)return;hideRing('hr-r4');fireRipple('rr-r4',36,41);tickCheck('chk-r4-lt','ci-r4-lt');});
+  a(1950,()=>{if(!r4Running)return;moveCursor('cur-r4',49,61);});
+  a(2650,()=>{if(!r4Running)return;showRing('hr-r4',49,61);});
+  a(3130,()=>{if(!r4Running)return;hideRing('hr-r4');fireRipple('rr-r4',49,61);tickCheck('chk-r4-rw','ci-r4-rw');});
+  a(3480,()=>{if(!r4Running)return;moveCursor('cur-r4',170,61);});
+  a(4180,()=>{if(!r4Running)return;showRing('hr-r4',170,61);});
+  a(4660,()=>{if(!r4Running)return;hideRing('hr-r4');fireRipple('rr-r4',170,61);tickCheck('chk-r4-pk','ci-r4-pk');});
+  a(9000,()=>{if(r4Running)runR4Loop();});
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT STEP 5 ANIMATION
+   CW_RECEIVES_6.png (1381×763 → display, scale≈0.492)
+   Save & Close(1253,726)→(616,358)
+────────────────────────────────────────── */
+function startR5Anim(){r5Running=true;r5Timers.forEach(clearTimeout);r5Timers=[];runR5Loop();}
+function replayR5(){if(!r5Running)r5Running=true;r5Timers.forEach(clearTimeout);r5Timers=[];runR5Loop();}
+function runR5Loop(){
+  if(!r5Running)return;
+  resetCheck('chk-r5-sv','ci-r5-sv'); hideRing('hr-r5'); resetCursor('cur-r5',340,280);
+  const a=(t,fn)=>at(r5Timers,t,fn);
+  a(420,()=>{if(!r5Running)return;moveCursor('cur-r5',616,358);});
+  a(1120,()=>{if(!r5Running)return;showRing('hr-r5',616,358);});
+  a(1600,()=>{if(!r5Running)return;hideRing('hr-r5');fireRipple('rr-r5',616,358);tickCheck('chk-r5-sv','ci-r5-sv');});
+  a(5500,()=>{if(r5Running)runR5Loop();});
+}
+
+
+/* ──────────────────────────────────────────
+   ORDER STEP 1 ANIMATION
+   CW_ORDERS_1.png (1382×769 → 680×378, scale 0.492)
+   Targets (original → scaled):
+     Operate  : (53,55)  → (26,27)
+     Warehouse: (100,245)→ (49,121)
+     Orders   : (643,273)→ (316,134)
+────────────────────────────────────────── */
+function startO1Anim(){o1Running=true;o1Timers.forEach(clearTimeout);o1Timers=[];runO1Loop();}
+function replayO1(){if(!o1Running)o1Running=true;o1Timers.forEach(clearTimeout);o1Timers=[];runO1Loop();}
+function runO1Loop(){
+  if(!o1Running)return;
+  resetCheck('chk-o1-op','ci-o1-op'); resetCheck('chk-o1-wh','ci-o1-wh'); resetCheck('chk-o1-or','ci-o1-or');
+  hideRing('hr-o1'); resetCursor('cur-o1',335,342);
+  const a=(t,fn)=>at(o1Timers,t,fn);
+  a(420,()=>{if(!o1Running)return;moveCursor('cur-o1',26,27);});
+  a(1120,()=>{if(!o1Running)return;showRing('hr-o1',26,27);});
+  a(1600,()=>{if(!o1Running)return;hideRing('hr-o1');fireRipple('rr-o1',26,27);tickCheck('chk-o1-op','ci-o1-op');});
+  a(1950,()=>{if(!o1Running)return;moveCursor('cur-o1',49,121);});
+  a(2650,()=>{if(!o1Running)return;showRing('hr-o1',49,121);});
+  a(3130,()=>{if(!o1Running)return;hideRing('hr-o1');fireRipple('rr-o1',49,121);tickCheck('chk-o1-wh','ci-o1-wh');});
+  a(3480,()=>{if(!o1Running)return;moveCursor('cur-o1',316,134);});
+  a(4180,()=>{if(!o1Running)return;showRing('hr-o1',316,134);});
+  a(4660,()=>{if(!o1Running)return;hideRing('hr-o1');fireRipple('rr-o1',316,134);tickCheck('chk-o1-or','ci-o1-or');});
+  a(9500,()=>{if(o1Running)runO1Loop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER STEP 2 ANIMATION
+   CW_ORDERS_2.png (1396×775 → 680×378, scale 0.487)
+   New button (original → scaled): (107,84) → (52,41)
+────────────────────────────────────────── */
+function startO2Anim(){o2Running=true;o2Timers.forEach(clearTimeout);o2Timers=[];runO2Loop();}
+function replayO2(){if(!o2Running)o2Running=true;o2Timers.forEach(clearTimeout);o2Timers=[];runO2Loop();}
+function runO2Loop(){
+  if(!o2Running)return;
+  const NX=46, NY=44;
+  resetCheck('chk-o2-new','ci-o2-new'); hideRing('hr-o2');
+  resetCursor('cur-o2',340,280);
+  const a=(t,fn)=>at(o2Timers,t,fn);
+  a(420,()=>{if(!o2Running)return;moveCursor('cur-o2',NX,NY);});
+  a(1120,()=>{if(!o2Running)return;showRing('hr-o2',NX,NY);});
+  a(1600,()=>{if(!o2Running)return;hideRing('hr-o2');fireRipple('rr-o2',NX,NY);tickCheck('chk-o2-new','ci-o2-new');});
+  a(5500,()=>{if(o2Running)runO2Loop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER STEP 3 ANIMATION
+   CW_ORDERS_3.png (1379×766 → 680×378, scale 0.493)
+   Targets (original → scaled):
+     Client [...]   : (109,121) → (54, 60)
+     Transport [...]: (372,149) → (183, 73)
+     Consignee [...]: (649,149) → (320, 73)
+────────────────────────────────────────── */
+function startO3Anim(){o3Running=true;o3Timers.forEach(clearTimeout);o3Timers=[];runO3Loop();}
+function replayO3(){if(!o3Running)o3Running=true;o3Timers.forEach(clearTimeout);o3Timers=[];runO3Loop();}
+function runO3Loop(){
+  if(!o3Running)return;
+  resetCheck('chk-o3-cl','ci-o3-cl'); resetCheck('chk-o3-tr','ci-o3-tr'); resetCheck('chk-o3-co','ci-o3-co');
+  hideRing('hr-o3'); resetCursor('cur-o3',340,280);
+  const a=(t,fn)=>at(o3Timers,t,fn);
+  a(420, ()=>{if(!o3Running)return;moveCursor('cur-o3',54,60);});
+  a(1120,()=>{if(!o3Running)return;showRing('hr-o3',54,60);});
+  a(1600,()=>{if(!o3Running)return;hideRing('hr-o3');fireRipple('rr-o3',54,60);tickCheck('chk-o3-cl','ci-o3-cl');});
+  a(1950,()=>{if(!o3Running)return;moveCursor('cur-o3',183,73);});
+  a(2650,()=>{if(!o3Running)return;showRing('hr-o3',183,73);});
+  a(3130,()=>{if(!o3Running)return;hideRing('hr-o3');fireRipple('rr-o3',183,73);tickCheck('chk-o3-tr','ci-o3-tr');});
+  a(3480,()=>{if(!o3Running)return;moveCursor('cur-o3',320,73);});
+  a(4180,()=>{if(!o3Running)return;showRing('hr-o3',320,73);});
+  a(4660,()=>{if(!o3Running)return;hideRing('hr-o3');fireRipple('rr-o3',320,73);tickCheck('chk-o3-co','ci-o3-co');});
+  a(9500,()=>{if(o3Running)runO3Loop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER STEP 4 ANIMATION
+   CW_ORDERS_4.png (1378×764 → 680×378, scale 0.494)
+   Targets (original → scaled):
+     Lines sub-tab     : (70, 80)  → (35, 39)
+     First product row : (175,121) → (86, 60)
+────────────────────────────────────────── */
+function startO4Anim(){o4Running=true;o4Timers.forEach(clearTimeout);o4Timers=[];runO4Loop();}
+function replayO4(){if(!o4Running)o4Running=true;o4Timers.forEach(clearTimeout);o4Timers=[];runO4Loop();}
+function runO4Loop(){
+  if(!o4Running)return;
+  resetCheck('chk-o4-ln','ci-o4-ln'); resetCheck('chk-o4-pr','ci-o4-pr');
+  hideRing('hr-o4'); resetCursor('cur-o4',340,280);
+  const a=(t,fn)=>at(o4Timers,t,fn);
+  a(420, ()=>{if(!o4Running)return;moveCursor('cur-o4',35,39);});
+  a(1120,()=>{if(!o4Running)return;showRing('hr-o4',35,39);});
+  a(1600,()=>{if(!o4Running)return;hideRing('hr-o4');fireRipple('rr-o4',35,39);tickCheck('chk-o4-ln','ci-o4-ln');});
+  a(1950,()=>{if(!o4Running)return;moveCursor('cur-o4',86,60);});
+  a(2650,()=>{if(!o4Running)return;showRing('hr-o4',86,60);});
+  a(3130,()=>{if(!o4Running)return;hideRing('hr-o4');fireRipple('rr-o4',86,60);tickCheck('chk-o4-pr','ci-o4-pr');});
+  a(9500,()=>{if(o4Running)runO4Loop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER STEP 5 ANIMATION
+   CW_ORDERS_5.png (1381×765 → 680×378, scale 0.492)
+   Targets (original → scaled):
+     Entry main tab  : (45, 56)   → (22, 28)
+     Save & Close btn: (1222,742) → (601,365)
+────────────────────────────────────────── */
+function startO5Anim(){o5Running=true;o5Timers.forEach(clearTimeout);o5Timers=[];runO5Loop();}
+function replayO5(){if(!o5Running)o5Running=true;o5Timers.forEach(clearTimeout);o5Timers=[];runO5Loop();}
+function runO5Loop(){
+  if(!o5Running)return;
+  resetCheck('chk-o5-en','ci-o5-en'); resetCheck('chk-o5-sv','ci-o5-sv');
+  hideRing('hr-o5'); resetCursor('cur-o5',340,280);
+  const a=(t,fn)=>at(o5Timers,t,fn);
+  a(420, ()=>{if(!o5Running)return;moveCursor('cur-o5',22,28);});
+  a(1120,()=>{if(!o5Running)return;showRing('hr-o5',22,28);});
+  a(1600,()=>{if(!o5Running)return;hideRing('hr-o5');fireRipple('rr-o5',22,28);tickCheck('chk-o5-en','ci-o5-en');});
+  a(1950,()=>{if(!o5Running)return;moveCursor('cur-o5',601,360);});
+  a(2650,()=>{if(!o5Running)return;showRing('hr-o5',601,360);});
+  a(3130,()=>{if(!o5Running)return;hideRing('hr-o5');fireRipple('rr-o5',601,360);tickCheck('chk-o5-sv','ci-o5-sv');});
+  a(9500,()=>{if(o5Running)runO5Loop();});
+}
+
+/* ──────────────────────────────────────────
+   PERCENT-BASED CURSOR HELPERS
+   Used by the natural-aspect (.vp-annot) screenshots
+   where coordinates are authored as % of the image.
+────────────────────────────────────────── */
+function movePct(id, x, y){
+  const el=document.getElementById(id); if(!el)return;
+  el.style.left=x+'%'; el.style.top=y+'%';
+}
+function showRingPct(id, x, y){
+  const el=document.getElementById(id); if(!el)return;
+  el.style.left='calc('+x+'% - 19px)'; el.style.top='calc('+y+'% - 19px)';
+  el.style.animation='none'; el.style.opacity='1'; void el.offsetHeight;
+  el.style.animation='pulseRing 0.72s ease-in-out infinite';
+}
+function fireRipplePct(id, x, y){
+  const el=document.getElementById(id); if(!el)return;
+  el.style.left='calc('+x+'% - 16px)'; el.style.top='calc('+y+'% - 16px)';
+  el.style.animation='none'; el.style.opacity='1'; void el.offsetHeight;
+  el.style.animation='rippleExpand 0.55s ease-out forwards';
+}
+function resetCursorPct(curId, x, y){
+  const el=document.getElementById(curId); if(!el)return;
+  el.style.transition='none'; el.style.left=x+'%'; el.style.top=y+'%';
+  void el.offsetHeight;
+  el.style.transition='left 0.68s cubic-bezier(.4,0,.2,1),top 0.68s cubic-bezier(.4,0,.2,1)';
+}
+
+/* ──────────────────────────────────────────
+   RECEIPT SPLIT ANIMATION (CW_RECEIVES_SPLIT_1.png, 1515×896)
+   Actions menu (6.1%,4.2%) → Split Receipt by Quantity (11%,54.8%)
+   → Split Quantity cell (54.1%,72%) → Save (86%,96%)
+────────────────────────────────────────── */
+function startRSPAnim(){rspRunning=true;rspTimers.forEach(clearTimeout);rspTimers=[];runRSPLoop();}
+function replayRSP(){if(!rspRunning)rspRunning=true;rspTimers.forEach(clearTimeout);rspTimers=[];runRSPLoop();}
+function runRSPLoop(){
+  if(!rspRunning)return;
+  resetCheck('chk-rsp-ac','ci-rsp-ac'); resetCheck('chk-rsp-qt','ci-rsp-qt'); resetCheck('chk-rsp-sv','ci-rsp-sv');
+  hideRing('hr-rsp'); resetCursorPct('cur-rsp',50,50);
+  const a=(t,fn)=>at(rspTimers,t,fn);
+  a(420, ()=>{if(!rspRunning)return;movePct('cur-rsp',6.1,4.2);});
+  a(1120,()=>{if(!rspRunning)return;showRingPct('hr-rsp',6.1,4.2);});
+  a(1500,()=>{if(!rspRunning)return;hideRing('hr-rsp');fireRipplePct('rr-rsp',6.1,4.2);});
+  a(1850,()=>{if(!rspRunning)return;movePct('cur-rsp',11,54.8);});
+  a(2550,()=>{if(!rspRunning)return;showRingPct('hr-rsp',11,54.8);});
+  a(2930,()=>{if(!rspRunning)return;hideRing('hr-rsp');fireRipplePct('rr-rsp',11,54.8);tickCheck('chk-rsp-ac','ci-rsp-ac');});
+  a(3300,()=>{if(!rspRunning)return;movePct('cur-rsp',54.1,72);});
+  a(4000,()=>{if(!rspRunning)return;showRingPct('hr-rsp',54.1,72);});
+  a(4380,()=>{if(!rspRunning)return;hideRing('hr-rsp');fireRipplePct('rr-rsp',54.1,72);tickCheck('chk-rsp-qt','ci-rsp-qt');});
+  a(4750,()=>{if(!rspRunning)return;movePct('cur-rsp',86,96);});
+  a(5450,()=>{if(!rspRunning)return;showRingPct('hr-rsp',86,96);});
+  a(5830,()=>{if(!rspRunning)return;hideRing('hr-rsp');fireRipplePct('rr-rsp',86,96);tickCheck('chk-rsp-sv','ci-rsp-sv');});
+  a(9800,()=>{if(rspRunning)runRSPLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER RELEASE ANIMATION (CW_ORDERS_RELEASE.png, 1547×895)
+   Release button (95%, 92%)
+────────────────────────────────────────── */
+function startORLAnim(){orlRunning=true;orlTimers.forEach(clearTimeout);orlTimers=[];runORLLoop();}
+function replayORL(){if(!orlRunning)orlRunning=true;orlTimers.forEach(clearTimeout);orlTimers=[];runORLLoop();}
+function runORLLoop(){
+  if(!orlRunning)return;
+  resetCheck('chk-orl-rl','ci-orl-rl'); hideRing('hr-orl'); resetCursorPct('cur-orl',50,52);
+  const a=(t,fn)=>at(orlTimers,t,fn);
+  a(500, ()=>{if(!orlRunning)return;movePct('cur-orl',95,92);});
+  a(1300,()=>{if(!orlRunning)return;showRingPct('hr-orl',95,92);});
+  a(1780,()=>{if(!orlRunning)return;hideRing('hr-orl');fireRipplePct('rr-orl',95,92);tickCheck('chk-orl-rl','ci-orl-rl');});
+  a(5200,()=>{if(orlRunning)runORLLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER "PICK THE ORDER" (CW_ORDERS_PICK.png, 1920×1032)
+   Pick button (91%, 93%)
+────────────────────────────────────────── */
+function startOPKAnim(){opkRunning=true;opkTimers.forEach(clearTimeout);opkTimers=[];runOPKLoop();}
+function replayOPK(){if(!opkRunning)opkRunning=true;opkTimers.forEach(clearTimeout);opkTimers=[];runOPKLoop();}
+function runOPKLoop(){
+  if(!opkRunning)return;
+  resetCheck('chk-opk-pk','ci-opk-pk'); hideRing('hr-opk'); resetCursorPct('cur-opk',50,50);
+  const a=(t,fn)=>at(opkTimers,t,fn);
+  a(500, ()=>{if(!opkRunning)return;movePct('cur-opk',91,93);});
+  a(1300,()=>{if(!opkRunning)return;showRingPct('hr-opk',91,93);});
+  a(1780,()=>{if(!opkRunning)return;hideRing('hr-opk');fireRipplePct('rr-opk',91,93);tickCheck('chk-opk-pk','ci-opk-pk');});
+  a(5200,()=>{if(opkRunning)runOPKLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER "PICKING SLIP" MENU (CW_ORDERS_PICKSLIP_1.png, 1920×1032)
+   Documents (8.2%,3.2%) → Picking Slip (9.6%,20.3%)
+────────────────────────────────────────── */
+function startPPKAnim(){ppkRunning=true;ppkTimers.forEach(clearTimeout);ppkTimers=[];runPPKLoop();}
+function replayPPK(){if(!ppkRunning)ppkRunning=true;ppkTimers.forEach(clearTimeout);ppkTimers=[];runPPKLoop();}
+function runPPKLoop(){
+  if(!ppkRunning)return;
+  resetCheck('chk-ppk-dm','ci-ppk-dm'); resetCheck('chk-ppk-ps','ci-ppk-ps');
+  hideRing('hr-ppk'); resetCursorPct('cur-ppk',50,50);
+  const a=(t,fn)=>at(ppkTimers,t,fn);
+  a(450, ()=>{if(!ppkRunning)return;movePct('cur-ppk',8.2,3.2);});
+  a(1150,()=>{if(!ppkRunning)return;showRingPct('hr-ppk',8.2,3.2);});
+  a(1530,()=>{if(!ppkRunning)return;hideRing('hr-ppk');fireRipplePct('rr-ppk',8.2,3.2);tickCheck('chk-ppk-dm','ci-ppk-dm');});
+  a(1900,()=>{if(!ppkRunning)return;movePct('cur-ppk',9.6,20.3);});
+  a(2600,()=>{if(!ppkRunning)return;showRingPct('hr-ppk',9.6,20.3);});
+  a(2980,()=>{if(!ppkRunning)return;hideRing('hr-ppk');fireRipplePct('rr-ppk',9.6,20.3);tickCheck('chk-ppk-ps','ci-ppk-ps');});
+  a(6800,()=>{if(ppkRunning)runPPKLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER "ARCHIVE" DOCUMENT TYPE (CW_ORDERS_ARCHIVE.png, 1545×896)
+   Document Type dropdown (47%, 37.7%)
+────────────────────────────────────────── */
+function startARCAnim(){arcRunning=true;arcTimers.forEach(clearTimeout);arcTimers=[];runARCLoop();}
+function replayARC(){if(!arcRunning)arcRunning=true;arcTimers.forEach(clearTimeout);arcTimers=[];runARCLoop();}
+function runARCLoop(){
+  if(!arcRunning)return;
+  resetCheck('chk-arc-dt','ci-arc-dt'); hideRing('hr-arc'); resetCursorPct('cur-arc',50,55);
+  const a=(t,fn)=>at(arcTimers,t,fn);
+  a(500, ()=>{if(!arcRunning)return;movePct('cur-arc',47,37.7);});
+  a(1300,()=>{if(!arcRunning)return;showRingPct('hr-arc',47,37.7);});
+  a(1780,()=>{if(!arcRunning)return;hideRing('hr-arc');fireRipplePct('rr-arc',47,37.7);tickCheck('chk-arc-dt','ci-arc-dt');});
+  a(5200,()=>{if(arcRunning)runARCLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER "DELIVERY LABELS" MENU (CW_ORDERS_LABELS_1.png, 1564×909)
+   Documents (16%,4.4%) → Delivery Labels (18.4%,26.3%)
+────────────────────────────────────────── */
+function startLBLAnim(){lblRunning=true;lblTimers.forEach(clearTimeout);lblTimers=[];runLBLLoop();}
+function replayLBL(){if(!lblRunning)lblRunning=true;lblTimers.forEach(clearTimeout);lblTimers=[];runLBLLoop();}
+function runLBLLoop(){
+  if(!lblRunning)return;
+  resetCheck('chk-lbl-dm','ci-lbl-dm'); resetCheck('chk-lbl-dl','ci-lbl-dl');
+  hideRing('hr-lbl'); resetCursorPct('cur-lbl',50,50);
+  const a=(t,fn)=>at(lblTimers,t,fn);
+  a(450, ()=>{if(!lblRunning)return;movePct('cur-lbl',16,4.4);});
+  a(1150,()=>{if(!lblRunning)return;showRingPct('hr-lbl',16,4.4);});
+  a(1530,()=>{if(!lblRunning)return;hideRing('hr-lbl');fireRipplePct('rr-lbl',16,4.4);tickCheck('chk-lbl-dm','ci-lbl-dm');});
+  a(1900,()=>{if(!lblRunning)return;movePct('cur-lbl',18.4,26.3);});
+  a(2600,()=>{if(!lblRunning)return;showRingPct('hr-lbl',18.4,26.3);});
+  a(2980,()=>{if(!lblRunning)return;hideRing('hr-lbl');fireRipplePct('rr-lbl',18.4,26.3);tickCheck('chk-lbl-dl','ci-lbl-dl');});
+  a(6800,()=>{if(lblRunning)runLBLLoop();});
+}
+
+/* ──────────────────────────────────────────
+   ORDER "PACKING SLIP" MENU (CW_ORDERS_PACKSLIP_1.png, 1544×898)
+   Documents (15.5%,4.1%) → Packing Slip (18.1%,19.5%)
+────────────────────────────────────────── */
+function startPKSAnim(){pksRunning=true;pksTimers.forEach(clearTimeout);pksTimers=[];runPKSLoop();}
+function replayPKS(){if(!pksRunning)pksRunning=true;pksTimers.forEach(clearTimeout);pksTimers=[];runPKSLoop();}
+function runPKSLoop(){
+  if(!pksRunning)return;
+  resetCheck('chk-pks-dm','ci-pks-dm'); resetCheck('chk-pks-ps','ci-pks-ps');
+  hideRing('hr-pks'); resetCursorPct('cur-pks',50,50);
+  const a=(t,fn)=>at(pksTimers,t,fn);
+  a(450, ()=>{if(!pksRunning)return;movePct('cur-pks',15.5,4.1);});
+  a(1150,()=>{if(!pksRunning)return;showRingPct('hr-pks',15.5,4.1);});
+  a(1530,()=>{if(!pksRunning)return;hideRing('hr-pks');fireRipplePct('rr-pks',15.5,4.1);tickCheck('chk-pks-dm','ci-pks-dm');});
+  a(1900,()=>{if(!pksRunning)return;movePct('cur-pks',18.1,19.5);});
+  a(2600,()=>{if(!pksRunning)return;showRingPct('hr-pks',18.1,19.5);});
+  a(2980,()=>{if(!pksRunning)return;hideRing('hr-pks');fireRipplePct('rr-pks',18.1,19.5);tickCheck('chk-pks-ps','ci-pks-ps');});
+  a(6800,()=>{if(pksRunning)runPKSLoop();});
+}
+</script>
+</body>
+</html>
